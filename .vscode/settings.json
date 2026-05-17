@@ -1,0 +1,33 @@
+{
+	"editor.defaultFormatter": "biomejs.biome",
+	"editor.formatOnPaste": false, // required
+	"editor.formatOnType": false, // required
+	"editor.formatOnSave": true, // optional
+	"editor.formatOnSaveMode": "file",
+	"typescript.tsdk": "node_modules/typescript/lib",
+	"typescript.enablePromptUseWorkspaceTsdk": true,
+	"typescript.updateImportsOnFileMove.enabled": "always",
+	"javascript.updateImportsOnFileMove.enabled": "always",
+	"editor.codeActionsOnSave": {
+		"source.organizeImports": "never", // disable native native VSC/TypeScript sort
+		"source.fixAll.biome": "explicit", // should apply all fixable lint rules
+		"source.organizeImports.biome": "explicit" // enables sorting of imports via biome on save
+	},
+	"tailwindCSS.experimental.classRegex": [
+		["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+		["cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+	],
+	"explorer.fileNesting.enabled": true,
+	"explorer.fileNesting.patterns": {
+		".env": ".env*",
+		"tsconfig.json": "tsconfig.*.json",
+		"vite.config.*": "vite.config.*, vite-plugin-generate-types.ts",
+		"package.json": "pnpm*, .eslint*, eslint*, .prettier*, prettier*, .editorconfig, .nvmrc, postcss.config.*, components.json"
+	},
+	"[svg]": {
+		"editor.defaultFormatter": "jock.svg"
+	},
+	"files.associations": {
+		"*.css": "tailwindcss"
+	}
+}
