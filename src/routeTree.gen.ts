@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ConstructorIndexRouteImport } from './routes/constructor.index'
+import { Route as ApiGenerateQuestionsRouteImport } from './routes/api/generate-questions'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,30 +23,39 @@ const ConstructorIndexRoute = ConstructorIndexRouteImport.update({
   path: '/constructor/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiGenerateQuestionsRoute = ApiGenerateQuestionsRouteImport.update({
+  id: '/api/generate-questions',
+  path: '/api/generate-questions',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/api/generate-questions': typeof ApiGenerateQuestionsRoute
   '/constructor/': typeof ConstructorIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/api/generate-questions': typeof ApiGenerateQuestionsRoute
   '/constructor': typeof ConstructorIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/api/generate-questions': typeof ApiGenerateQuestionsRoute
   '/constructor/': typeof ConstructorIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/constructor/'
+  fullPaths: '/' | '/api/generate-questions' | '/constructor/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/constructor'
-  id: '__root__' | '/' | '/constructor/'
+  to: '/' | '/api/generate-questions' | '/constructor'
+  id: '__root__' | '/' | '/api/generate-questions' | '/constructor/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ApiGenerateQuestionsRoute: typeof ApiGenerateQuestionsRoute
   ConstructorIndexRoute: typeof ConstructorIndexRoute
 }
 
@@ -65,11 +75,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ConstructorIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/generate-questions': {
+      id: '/api/generate-questions'
+      path: '/api/generate-questions'
+      fullPath: '/api/generate-questions'
+      preLoaderRoute: typeof ApiGenerateQuestionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ApiGenerateQuestionsRoute: ApiGenerateQuestionsRoute,
   ConstructorIndexRoute: ConstructorIndexRoute,
 }
 export const routeTree = rootRouteImport
