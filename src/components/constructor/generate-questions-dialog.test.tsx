@@ -85,7 +85,8 @@ describe("GenerateQuestionsDialog", () => {
 
 		await waitFor(() => expect(globalThis.fetch).toHaveBeenCalledTimes(1));
 
-		const [, requestInit] = vi.mocked(globalThis.fetch).mock.calls[0];
+		const [requestUrl, requestInit] = vi.mocked(globalThis.fetch).mock.calls[0];
+		expect(requestUrl).toBe("/api/generate-questions");
 		expect(JSON.parse(String(requestInit?.body))).toEqual({
 			age: 8,
 			count: 2,

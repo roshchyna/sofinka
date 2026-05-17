@@ -54,7 +54,7 @@ interface GenerateQuestionsResponse {
 
 async function generateQuestions(payload: GenerateQuestionsMutationPayload) {
 	const { emptyErrorMessage, errorMessage, ...request } = payload;
-	const response = await fetch("http://localhost:3001/api/generate-questions", {
+	const response = await fetch("/api/generate-questions", {
 		method: "POST",
 		headers: { "Content-Type": "application/json" },
 		body: JSON.stringify(request),

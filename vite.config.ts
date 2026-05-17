@@ -5,6 +5,7 @@ import { devtools } from "@tanstack/devtools-vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 
 import viteReact from "@vitejs/plugin-react";
+import { nitro } from "nitro/vite";
 import { defineConfig } from "vite";
 
 const config = defineConfig({
@@ -14,7 +15,13 @@ const config = defineConfig({
 			"@": fileURLToPath(new URL("./src", import.meta.url)),
 		},
 	},
-	plugins: [devtools(), tailwindcss(), tanstackStart(), viteReact()],
+	plugins: [
+		devtools(),
+		tailwindcss(),
+		tanstackStart(),
+		...(process.env.VITEST ? [] : [nitro()]),
+		viteReact(),
+	],
 });
 
 export default config;
