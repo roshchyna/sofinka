@@ -103,7 +103,7 @@ export default function ApplicationShell({ children }: PropsWithChildren) {
 	return (
 		<div className="flex min-h-screen flex-col bg-white text-zinc-950 dark:bg-zinc-950 dark:text-zinc-300">
 			<header className="shrink-0 border-zinc-200 border-b bg-pink-50 dark:border-zinc-800 dark:bg-zinc-900">
-				<div className="mx-auto flex min-h-14 max-w-5xl flex-wrap items-center justify-between gap-3 px-6 py-2">
+				<div className="mx-auto flex min-h-14 max-w-6xl flex-wrap items-center justify-between gap-3 px-6 py-2">
 					<Link to="/" className="font-semibold text-lg dark:text-zinc-300">
 						Sofinka
 					</Link>
@@ -174,7 +174,7 @@ export default function ApplicationShell({ children }: PropsWithChildren) {
 				)}
 			</header>
 
-			<main className="mx-auto flex w-full max-w-5xl flex-1 flex-col px-6 py-8">
+			<main className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-6 py-8">
 				{children}
 			</main>
 		</div>

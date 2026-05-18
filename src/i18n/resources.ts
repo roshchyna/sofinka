@@ -25,12 +25,12 @@ export const resources = {
 			},
 			home: {
 				questionEyebrow: "Question {{number}}",
-				mascotAction: "Start",
 				mascotAria: "Muza companion",
 			},
 			notFound: {
 				title: "The page you requested does not exist.",
 				animationAria: "404 page illustration",
+				homeLink: "Go to home page",
 			},
 			constructor: {
 				title: "Quiz constructor",
@@ -207,12 +207,12 @@ export const resources = {
 			},
 			home: {
 				questionEyebrow: "Запитання {{number}}",
-				mascotAction: "Старт",
-				mascotAria: "Помічниця Муза",
+				mascotAria: "Muza companion",
 			},
 			notFound: {
 				title: "Сторінки, яку ти шукаєш, не існує.",
-				animationAria: "Ілюстрація сторінки 404",
+				animationAria: "404 page illustration",
+				homeLink: "На головну",
 			},
 			constructor: {
 				title: "Конструктор тестів",
@@ -388,12 +388,12 @@ export const resources = {
 			},
 			home: {
 				questionEyebrow: "Вопрос {{number}}",
-				mascotAction: "Start",
-				mascotAria: "Компаньон Муза",
+				mascotAria: "Muza companion",
 			},
 			notFound: {
-				title: "The page you requested does not exist.",
-				animationAria: "Иллюстрация страницы 404",
+				title: "Запрошенная вами страница не существует.",
+				animationAria: "404 page illustration",
+				homeLink: "На главную",
 			},
 			constructor: {
 				title: "Конструктор тестов",

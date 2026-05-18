@@ -63,7 +63,15 @@ function HomePage() {
 				</div>
 			</section>
 
-			<HomeMascot className="fixed bottom-3 left-6 z-20 sm:bottom-6 sm:left-20" />
+			<div className="pointer-events-none fixed inset-x-0 bottom-3 z-20 sm:bottom-6">
+				<div className="relative mx-auto w-full max-w-5xl px-6">
+					<HomeMascot className="pointer-events-auto xl:hidden fixed bottom-3 left-6 sm:bottom-6 sm:left-6" />
+
+					<div className="absolute bottom-0 right-full pr-3 pointer-events-auto hidden xl:block">
+						<HomeMascot />
+					</div>
+				</div>
+			</div>
 		</>
 	);
 }
