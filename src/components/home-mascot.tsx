@@ -1,45 +1,37 @@
 import { useRive } from "@rive-app/react-webgl2";
-import { memo, useEffect, useState } from "react";
+import { memo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import muzaCatRiv from "@/assets/muza-cat-companion.riv";
 import { cn } from "@/utils/twMerge";
-import { Button } from "../ui/button";
 
 interface HomeMascotProps {
 	className?: string;
 }
 
 const stateMachine = "State Machine 1";
+const muzaCatRiv = "/rive/muza-cat-companion.riv";
 
 export const HomeMascot = memo(({ className }: HomeMascotProps) => {
 	const { t } = useTranslation();
-	const [isVisible, setIsVisible] = useState(false);
-	const { rive, RiveComponent } = useRive({
+	const [isLoaded, setIsLoaded] = useState(false);
+
+	const { RiveComponent } = useRive({
 		artboard: "Artboard",
 		src: muzaCatRiv,
 		stateMachines: stateMachine,
 		autoplay: true,
+		onLoad: () => setIsLoaded(true),
 	});
 
-	useEffect(() => {
-		const timeoutId = window.setTimeout(() => setIsVisible(true), 100);
-
-		return () => window.clearTimeout(timeoutId);
-	}, []);
-
 	return (
-		<>
-			<Button onClick={() => rive?.play()}>{t("home.mascotAction")}</Button>
-
-			<RiveComponent
-				aria-label={t("home.mascotAria")}
-				className={cn(
-					"pointer-events-auto size-36 shrink-0 transition-all duration-700 ease-out sm:size-48",
-					isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0",
-					className,
-				)}
-			/>
-		</>
+		<RiveComponent
+			aria-label={t("home.mascotAria")}
+			className={cn(
+				"pointer-events-auto size-36 shrink-0 transition-all duration-700 ease-out sm:size-48",
+				"opacity-0 scale-95",
+				isLoaded && "opacity-100 scale-100",
+				className,
+			)}
+		/>
 	);
 });
 

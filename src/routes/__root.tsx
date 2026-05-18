@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
 	createRootRoute,
 	HeadContent,
+	Link,
 	Outlet,
 	Scripts,
 } from "@tanstack/react-router";
@@ -14,6 +15,7 @@ import { DEFAULT_LANGUAGE } from "@/i18n/languages";
 import { Loader } from "@/ui/loader";
 import { Toaster } from "@/ui/toaster";
 import appCss from "../styles.css?url";
+import { Button } from "../ui/button";
 
 const NotFoundAnimation = lazy(() => import("@/components/not-found-page"));
 
@@ -83,9 +85,12 @@ function NotFoundPage() {
 			>
 				<NotFoundAnimation />
 			</Suspense>
-			<h1 className="font-semibold text-2xl text-zinc-950 dark:text-zinc-300">
+			<h1 className="font-semibold text-2xl text-zinc-950 dark:text-zinc-300 mt-5">
 				{t("notFound.title")}
 			</h1>
+			<Button asChild>
+				<Link to="/">{t("notFound.homeLink")}</Link>
+			</Button>
 		</section>
 	);
 }
