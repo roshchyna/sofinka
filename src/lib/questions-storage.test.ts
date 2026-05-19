@@ -61,8 +61,8 @@ describe("questions storage", () => {
 		const questions = [makeQuestion(103, "Legacy question")];
 		window.localStorage.setItem("sofinka.questions", JSON.stringify(questions));
 
-		expect(getQuestions("ru")).toEqual(questions);
-		expect(getQuestions("en")).toBe(getDefaultQuestions("en"));
+		expect(getQuestions("en")).toEqual(questions);
+		expect(getQuestions("ru")).toBe(getDefaultQuestions("ru"));
 	});
 
 	it("ignores invalid stored question JSON", () => {

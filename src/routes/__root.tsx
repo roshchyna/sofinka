@@ -5,13 +5,14 @@ import {
 	Link,
 	Outlet,
 	Scripts,
+	useRouterState,
 } from "@tanstack/react-router";
 import { lazy, type ReactNode, Suspense, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import ApplicationShell from "@/common/application-shell";
 import "@/i18n";
-import { DEFAULT_LANGUAGE } from "@/i18n/languages";
+import { type Language, toLanguage } from "@/i18n/languages";
 import { Loader } from "@/ui/loader";
 import { Toaster } from "@/ui/toaster";
 import appCss from "../styles.css?url";
@@ -72,6 +73,9 @@ function RootRouteComponent() {
 }
 
 function NotFoundPage() {
+	const language = useRouterState({
+		select: (state) => getLanguageFromPathname(state.location.pathname),
+	});
 	const { t } = useTranslation();
 
 	return (
@@ -89,15 +93,32 @@ function NotFoundPage() {
 				{t("notFound.title")}
 			</h1>
 			<Button asChild>
-				<Link to="/">{t("notFound.homeLink")}</Link>
+				<Link
+					params={{
+						language,
+					}}
+					to="/$language"
+				>
+					{t("notFound.homeLink")}
+				</Link>
 			</Button>
 		</section>
 	);
 }
 
+function getLanguageFromPathname(pathname: string): Language {
+	const [language] = pathname.split("/").filter(Boolean);
+
+	return toLanguage(language);
+}
+
 function RootDocument({ children }: { children: ReactNode }) {
+	const language = useRouterState({
+		select: (state) => getLanguageFromPathname(state.location.pathname),
+	});
+
 	return (
-		<html lang={DEFAULT_LANGUAGE} suppressHydrationWarning>
+		<html lang={language} suppressHydrationWarning>
 			<head>
 				{/* biome-ignore lint/security/noDangerouslySetInnerHtml: Applies the saved theme before hydration. */}
 				<script dangerouslySetInnerHTML={{ __html: themeScript }} />

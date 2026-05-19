@@ -1,24 +1,25 @@
-import { Link, useRouterState } from "@tanstack/react-router";
-import { Languages, Menu, Moon, Sun, UserCheck } from "lucide-react";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
+import {
+	Languages,
+	Menu,
+	MessageCircle,
+	Moon,
+	Sun,
+	UserCheck,
+} from "lucide-react";
 import { type PropsWithChildren, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-	DEFAULT_LANGUAGE,
-	type Language,
-	languageOptions,
-	toLanguage,
-} from "@/i18n/languages";
+import MuzaAssistant from "@/components/muza-assistant";
+import { MuzaAssistantProvider } from "@/components/muza-assistant/context";
+import { getMuzaCopy } from "@/components/muza-assistant/copy";
+import { type Language, languageOptions, toLanguage } from "@/i18n/languages";
 import {
 	CHILD_AGE_CHANGED_EVENT,
 	childAgeOptions,
 	getChildAge,
 	saveChildAge,
 } from "@/lib/child-age-storage";
-import {
-	getLanguage,
-	LANGUAGE_CHANGED_EVENT,
-	saveLanguage,
-} from "@/lib/language-storage";
+import { saveLanguage } from "@/lib/language-storage";
 import { isThemeDark, setTheme, updateTheme } from "@/lib/theme";
 import { Button } from "@/ui/button";
 import {
@@ -30,14 +31,19 @@ import {
 import { Select } from "@/ui/select";
 
 export default function ApplicationShell({ children }: PropsWithChildren) {
+	const navigate = useNavigate();
+	const pathname = useRouterState({
+		select: (state) => state.location.pathname,
+	});
+	const language = getLanguageFromPathname(pathname);
 	const { i18n, t } = useTranslation();
 	const [childAge, setChildAge] = useState(7);
-	const [language, setLanguageState] = useState<Language>(DEFAULT_LANGUAGE);
 	const [isDark, setIsDark] = useState(true);
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 	const isTransitioning = useRouterState({
 		select: (state) => state.isTransitioning,
 	});
+	const muzaCopy = getMuzaCopy(language);
 
 	useEffect(() => {
 		const syncChildAge = () => setChildAge(getChildAge());
@@ -53,23 +59,12 @@ export default function ApplicationShell({ children }: PropsWithChildren) {
 	}, []);
 
 	useEffect(() => {
-		const syncLanguage = () => {
-			const nextLanguage = getLanguage();
-
-			setLanguageState(nextLanguage);
-			document.documentElement.lang = nextLanguage;
-			void i18n.changeLanguage(nextLanguage);
-		};
-
-		syncLanguage();
-		window.addEventListener(LANGUAGE_CHANGED_EVENT, syncLanguage);
-		window.addEventListener("storage", syncLanguage);
-
-		return () => {
-			window.removeEventListener(LANGUAGE_CHANGED_EVENT, syncLanguage);
-			window.removeEventListener("storage", syncLanguage);
-		};
-	}, [i18n]);
+		document.documentElement.lang = language;
+		saveLanguage(language);
+		if (toLanguage(i18n.resolvedLanguage ?? i18n.language) !== language) {
+			void i18n.changeLanguage(language);
+		}
+	}, [i18n, language]);
 
 	useEffect(() => {
 		const syncTheme = () => {
@@ -100,11 +95,21 @@ export default function ApplicationShell({ children }: PropsWithChildren) {
 		saveChildAge(age);
 	}
 
-	function changeLanguage(language: Language) {
-		setLanguageState(language);
-		saveLanguage(language);
-		document.documentElement.lang = language;
-		void i18n.changeLanguage(language);
+	function changeLanguage(nextLanguage: Language) {
+		const to = isConstructorPath(pathname)
+			? "/$language/constructor"
+			: "/$language";
+
+		saveLanguage(nextLanguage);
+		document.documentElement.lang = nextLanguage;
+		void i18n.changeLanguage(nextLanguage);
+		void navigate({
+			params: {
+				language: nextLanguage,
+			},
+			replace: true,
+			to,
+		});
 	}
 
 	function closeMobileMenu() {
@@ -128,7 +133,13 @@ export default function ApplicationShell({ children }: PropsWithChildren) {
 					size="sm"
 					variant={isMobile ? "outline" : "default"}
 				>
-					<Link onClick={isMobile ? closeMobileMenu : undefined} to="/">
+					<Link
+						onClick={isMobile ? closeMobileMenu : undefined}
+						params={{
+							language,
+						}}
+						to="/$language"
+					>
 						{t("nav.quiz")}
 					</Link>
 				</Button>
@@ -140,7 +151,10 @@ export default function ApplicationShell({ children }: PropsWithChildren) {
 				>
 					<Link
 						onClick={isMobile ? closeMobileMenu : undefined}
-						to="/constructor"
+						params={{
+							language,
+						}}
+						to="/$language/constructor"
 					>
 						{t("nav.constructor")}
 					</Link>
@@ -209,45 +223,83 @@ export default function ApplicationShell({ children }: PropsWithChildren) {
 	}
 
 	return (
-		<div className="flex min-h-screen flex-col bg-white text-zinc-950 dark:bg-zinc-950 dark:text-zinc-300">
-			<header className="shrink-0 border-zinc-200 border-b bg-pink-50 dark:border-zinc-800 dark:bg-zinc-900">
-				<div className="mx-auto flex min-h-14 max-w-6xl flex-wrap items-center justify-between gap-3 px-6 py-2">
-					<Link to="/" className="font-semibold text-lg dark:text-zinc-300">
-						Sofinka
-					</Link>
+		<MuzaAssistantProvider>
+			<div className="flex min-h-screen flex-col bg-white text-zinc-950 dark:bg-zinc-950 dark:text-zinc-300">
+				<header className="shrink-0 border-zinc-200 border-b bg-pink-50 dark:border-zinc-800 dark:bg-zinc-900">
+					<div className="mx-auto flex min-h-14 max-w-6xl flex-wrap items-center justify-between gap-3 px-6 py-2">
+						<Link
+							className="font-semibold text-lg dark:text-zinc-300"
+							params={{
+								language,
+							}}
+							to="/$language"
+						>
+							Sofinka
+						</Link>
 
-					<nav className="hidden flex-wrap items-center justify-end gap-2 text-sm md:flex">
-						{renderNavigationControls("desktop")}
-					</nav>
+						<nav className="hidden flex-wrap items-center justify-end gap-2 text-sm md:flex">
+							{renderNavigationControls("desktop")}
+						</nav>
 
-					<Dialog open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-						<DialogTrigger asChild>
-							<Button
-								aria-label={t("nav.openMenu")}
-								className="md:hidden"
-								size="sm"
-								variant="outline"
+						<div className="flex items-center gap-2 md:hidden">
+							<MuzaAssistant
+								trigger={
+									<Button
+										aria-label={muzaCopy.title}
+										size="sm"
+										title={muzaCopy.title}
+										variant="outline"
+									>
+										<MessageCircle />
+									</Button>
+								}
+							/>
+
+							<Dialog
+								open={isMobileMenuOpen}
+								onOpenChange={setIsMobileMenuOpen}
 							>
-								<Menu />
-							</Button>
-						</DialogTrigger>
-						<DialogSideContent className="">
-							<DialogTitle className="pr-8">{t("nav.menu")}</DialogTitle>
-							<nav className="grid justify-items-end gap-3 text-sm">
-								{renderNavigationControls("mobile")}
-							</nav>
-						</DialogSideContent>
-					</Dialog>
+								<DialogTrigger asChild>
+									<Button
+										aria-label={t("nav.openMenu")}
+										size="sm"
+										variant="outline"
+									>
+										<Menu />
+									</Button>
+								</DialogTrigger>
+								<DialogSideContent className="">
+									<DialogTitle className="pr-8">{t("nav.menu")}</DialogTitle>
+									<nav className="grid justify-items-end gap-3 text-sm">
+										{renderNavigationControls("mobile")}
+									</nav>
+								</DialogSideContent>
+							</Dialog>
+						</div>
+					</div>
+
+					{isTransitioning && (
+						<div className="h-0.5 bg-zinc-950 dark:bg-zinc-50" />
+					)}
+				</header>
+
+				<main className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-6 py-8">
+					{children}
+				</main>
+				<div className="hidden md:block">
+					<MuzaAssistant />
 				</div>
-
-				{isTransitioning && (
-					<div className="h-0.5 bg-zinc-950 dark:bg-zinc-50" />
-				)}
-			</header>
-
-			<main className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-6 py-8">
-				{children}
-			</main>
-		</div>
+			</div>
+		</MuzaAssistantProvider>
 	);
+}
+
+function getLanguageFromPathname(pathname: string): Language {
+	const [language] = pathname.split("/").filter(Boolean);
+
+	return toLanguage(language);
+}
+
+function isConstructorPath(pathname: string) {
+	return pathname.split("/").filter(Boolean).includes("constructor");
 }

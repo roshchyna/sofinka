@@ -13,7 +13,7 @@ describe("language storage", () => {
 	});
 
 	it("returns the default language when storage is empty", () => {
-		expect(getLanguage()).toBe("ru");
+		expect(getLanguage()).toBe("en");
 	});
 
 	it("returns a saved supported language", () => {
@@ -25,7 +25,7 @@ describe("language storage", () => {
 	it("ignores unsupported stored language values", () => {
 		window.localStorage.setItem("sofinka.language", "ua");
 
-		expect(getLanguage()).toBe("ru");
+		expect(getLanguage()).toBe("en");
 	});
 
 	it("saves language and dispatches the changed event", () => {
