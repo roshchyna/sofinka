@@ -1,6 +1,8 @@
 import confetti from "canvas-confetti";
 import { toast } from "sonner";
 
+import i18n from "@/i18n";
+
 function randomInRange(min: number, max: number) {
 	return Math.random() * (max - min) + min;
 }
@@ -26,5 +28,5 @@ function fireRandomDirectionConfetti() {
 
 export function rewardCorrectAnswer() {
 	fireRandomDirectionConfetti();
-	toast.success("Верно! +1 звезда");
+	toast.success(i18n.t("reward.correctAnswerToast"));
 }
