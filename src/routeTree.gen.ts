@@ -9,10 +9,19 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LanguageRouteImport } from './routes/$language'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ConstructorIndexRouteImport } from './routes/constructor.index'
+import { Route as LanguageIndexRouteImport } from './routes/$language.index'
+import { Route as ApiMuzaAssistantRouteImport } from './routes/api/muza-assistant'
 import { Route as ApiGenerateQuestionsRouteImport } from './routes/api/generate-questions'
+import { Route as LanguageConstructorIndexRouteImport } from './routes/$language.constructor.index'
 
+const LanguageRoute = LanguageRouteImport.update({
+  id: '/$language',
+  path: '/$language',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -23,44 +32,101 @@ const ConstructorIndexRoute = ConstructorIndexRouteImport.update({
   path: '/constructor/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LanguageIndexRoute = LanguageIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => LanguageRoute,
+} as any)
+const ApiMuzaAssistantRoute = ApiMuzaAssistantRouteImport.update({
+  id: '/api/muza-assistant',
+  path: '/api/muza-assistant',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiGenerateQuestionsRoute = ApiGenerateQuestionsRouteImport.update({
   id: '/api/generate-questions',
   path: '/api/generate-questions',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LanguageConstructorIndexRoute =
+  LanguageConstructorIndexRouteImport.update({
+    id: '/constructor/',
+    path: '/constructor/',
+    getParentRoute: () => LanguageRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/$language': typeof LanguageRouteWithChildren
   '/api/generate-questions': typeof ApiGenerateQuestionsRoute
+  '/api/muza-assistant': typeof ApiMuzaAssistantRoute
+  '/$language/': typeof LanguageIndexRoute
   '/constructor/': typeof ConstructorIndexRoute
+  '/$language/constructor/': typeof LanguageConstructorIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/api/generate-questions': typeof ApiGenerateQuestionsRoute
+  '/api/muza-assistant': typeof ApiMuzaAssistantRoute
+  '/$language': typeof LanguageIndexRoute
   '/constructor': typeof ConstructorIndexRoute
+  '/$language/constructor': typeof LanguageConstructorIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/$language': typeof LanguageRouteWithChildren
   '/api/generate-questions': typeof ApiGenerateQuestionsRoute
+  '/api/muza-assistant': typeof ApiMuzaAssistantRoute
+  '/$language/': typeof LanguageIndexRoute
   '/constructor/': typeof ConstructorIndexRoute
+  '/$language/constructor/': typeof LanguageConstructorIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/generate-questions' | '/constructor/'
+  fullPaths:
+    | '/'
+    | '/$language'
+    | '/api/generate-questions'
+    | '/api/muza-assistant'
+    | '/$language/'
+    | '/constructor/'
+    | '/$language/constructor/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/generate-questions' | '/constructor'
-  id: '__root__' | '/' | '/api/generate-questions' | '/constructor/'
+  to:
+    | '/'
+    | '/api/generate-questions'
+    | '/api/muza-assistant'
+    | '/$language'
+    | '/constructor'
+    | '/$language/constructor'
+  id:
+    | '__root__'
+    | '/'
+    | '/$language'
+    | '/api/generate-questions'
+    | '/api/muza-assistant'
+    | '/$language/'
+    | '/constructor/'
+    | '/$language/constructor/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  LanguageRoute: typeof LanguageRouteWithChildren
   ApiGenerateQuestionsRoute: typeof ApiGenerateQuestionsRoute
+  ApiMuzaAssistantRoute: typeof ApiMuzaAssistantRoute
   ConstructorIndexRoute: typeof ConstructorIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/$language': {
+      id: '/$language'
+      path: '/$language'
+      fullPath: '/$language'
+      preLoaderRoute: typeof LanguageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -75,6 +141,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ConstructorIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/$language/': {
+      id: '/$language/'
+      path: '/'
+      fullPath: '/$language/'
+      preLoaderRoute: typeof LanguageIndexRouteImport
+      parentRoute: typeof LanguageRoute
+    }
+    '/api/muza-assistant': {
+      id: '/api/muza-assistant'
+      path: '/api/muza-assistant'
+      fullPath: '/api/muza-assistant'
+      preLoaderRoute: typeof ApiMuzaAssistantRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/generate-questions': {
       id: '/api/generate-questions'
       path: '/api/generate-questions'
@@ -82,12 +162,35 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiGenerateQuestionsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/$language/constructor/': {
+      id: '/$language/constructor/'
+      path: '/constructor'
+      fullPath: '/$language/constructor/'
+      preLoaderRoute: typeof LanguageConstructorIndexRouteImport
+      parentRoute: typeof LanguageRoute
+    }
   }
 }
 
+interface LanguageRouteChildren {
+  LanguageIndexRoute: typeof LanguageIndexRoute
+  LanguageConstructorIndexRoute: typeof LanguageConstructorIndexRoute
+}
+
+const LanguageRouteChildren: LanguageRouteChildren = {
+  LanguageIndexRoute: LanguageIndexRoute,
+  LanguageConstructorIndexRoute: LanguageConstructorIndexRoute,
+}
+
+const LanguageRouteWithChildren = LanguageRoute._addFileChildren(
+  LanguageRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  LanguageRoute: LanguageRouteWithChildren,
   ApiGenerateQuestionsRoute: ApiGenerateQuestionsRoute,
+  ApiMuzaAssistantRoute: ApiMuzaAssistantRoute,
   ConstructorIndexRoute: ConstructorIndexRoute,
 }
 export const routeTree = rootRouteImport

@@ -2,7 +2,7 @@ export const languages = ["en", "uk", "ru"] as const;
 
 export type Language = (typeof languages)[number];
 
-export const DEFAULT_LANGUAGE: Language = "ru";
+export const DEFAULT_LANGUAGE: Language = "en";
 
 export const languageOptions: { label: string; value: Language }[] = [
 	{ label: "English", value: "en" },
