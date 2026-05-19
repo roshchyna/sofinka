@@ -1,6 +1,6 @@
 import { useRive, useStateMachineInput } from "@rive-app/react-webgl2";
 import { SendHorizontal } from "lucide-react";
-import { type FormEvent, type KeyboardEvent, useEffect } from "react";
+import { type ChangeEvent, type KeyboardEvent, useEffect } from "react";
 
 import { Button } from "@/ui/button";
 import { Textarea } from "@/ui/textarea";
@@ -79,7 +79,7 @@ export function PromptInput({
 }: PromptInputProps) {
 	const canSubmit = Boolean(value.trim()) && !isStreamLoading;
 
-	function submitForm(event: FormEvent<HTMLFormElement>) {
+	function submitForm(event: ChangeEvent<HTMLFormElement>) {
 		event.preventDefault();
 		if (canSubmit) onSubmit();
 	}
