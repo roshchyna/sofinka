@@ -4,6 +4,9 @@ export const resources = {
 			nav: {
 				quiz: "Quiz",
 				constructor: "Constructor",
+				menu: "Menu",
+				openMenu: "Open menu",
+				preferences: "Preferences",
 				age: "Age",
 				childAge: "Child age",
 				ageOption: "{{age}} years",
@@ -186,6 +189,9 @@ export const resources = {
 			nav: {
 				quiz: "Тести",
 				constructor: "Конструктор",
+				menu: "Меню",
+				openMenu: "Відкрити меню",
+				preferences: "Налаштування",
 				age: "Вік",
 				childAge: "Вік дитини",
 				ageOption: "{{age}} років",
@@ -367,6 +373,9 @@ export const resources = {
 			nav: {
 				quiz: "Тесты",
 				constructor: "Конструктор",
+				menu: "Меню",
+				openMenu: "Открыть меню",
+				preferences: "Настройки",
 				age: "Возраст",
 				childAge: "Возраст ребёнка",
 				ageOption: "{{age}} лет",

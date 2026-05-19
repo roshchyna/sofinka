@@ -20,17 +20,18 @@ export function TrueFalseEditor({
 			</FieldLabel>
 			<Select
 				id={`${idPrefix}-true-false`}
-				onChange={(event) =>
+				onValueChange={(value) =>
 					setDraft((current) => ({
 						...current,
-						trueFalseAnswer: event.target.value === "true",
+						trueFalseAnswer: value === "true",
 					}))
 				}
+				options={[
+					{ label: t("editor.true"), value: "true" },
+					{ label: t("editor.false"), value: "false" },
+				]}
 				value={String(draft.trueFalseAnswer)}
-			>
-				<option value="true">{t("editor.true")}</option>
-				<option value="false">{t("editor.false")}</option>
-			</Select>
+			/>
 		</div>
 	);
 }

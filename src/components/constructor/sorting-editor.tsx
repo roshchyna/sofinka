@@ -102,24 +102,22 @@ export function SortingEditor({ draft, setDraft }: DraftEditorProps) {
 							value={item.label}
 						/>
 						<Select
-							onChange={(event) =>
+							onValueChange={(value) =>
 								setDraft((current) => ({
 									...current,
 									sortingItems: current.sortingItems.map((currentItem) =>
 										currentItem.id === item.id
-											? { ...currentItem, categoryId: event.target.value }
+											? { ...currentItem, categoryId: value }
 											: currentItem,
 									),
 								}))
 							}
+							options={draft.sortingCategories.map((category) => ({
+								label: category.label || t("editor.unnamed"),
+								value: category.id,
+							}))}
 							value={item.categoryId}
-						>
-							{draft.sortingCategories.map((category) => (
-								<option key={category.id} value={category.id}>
-									{category.label || t("editor.unnamed")}
-								</option>
-							))}
-						</Select>
+						/>
 						<Button
 							disabled={draft.sortingItems.length <= 1}
 							onClick={() =>
