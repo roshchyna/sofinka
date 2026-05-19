@@ -180,17 +180,13 @@ export function GenerateQuestionsDialog({
 							</label>
 							<Select
 								id="generate-type"
-								onChange={(event) =>
-									setType(event.target.value as QuestionType)
-								}
+								onValueChange={(value) => setType(value as QuestionType)}
+								options={questionTypeOptions.map((option) => ({
+									label: t(option.labelKey),
+									value: option.value,
+								}))}
 								value={type}
-							>
-								{questionTypeOptions.map((option) => (
-									<option key={option.value} value={option.value}>
-										{t(option.labelKey)}
-									</option>
-								))}
-							</Select>
+							/>
 						</div>
 					</div>
 

@@ -57,6 +57,33 @@ function DialogContent({
 	);
 }
 
+function DialogSideContent({
+	children,
+	className,
+	...props
+}: React.ComponentProps<typeof DialogPrimitive.Content>) {
+	const { t } = useTranslation();
+
+	return (
+		<DialogPortal>
+			<DialogOverlay />
+			<DialogPrimitive.Content
+				className={cn(
+					"fixed top-0 right-0 z-50 grid h-dvh w-[min(22rem,calc(100vw-2rem))] content-start gap-5 overflow-y-auto border-zinc-200 border-l bg-white p-6 shadow-xl outline-none data-[state=closed]:animate-out data-[state=open]:animate-in data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right dark:border-zinc-800 dark:bg-zinc-950",
+					className,
+				)}
+				{...props}
+			>
+				{children}
+				<DialogPrimitive.Close className="absolute top-4 right-4 rounded-sm text-zinc-500 opacity-70 outline-none transition-opacity hover:opacity-100 focus-visible:ring-2 focus-visible:ring-zinc-950/10 dark:focus-visible:ring-zinc-50/10">
+					<X className="size-4" />
+					<span className="sr-only">{t("common.close")}</span>
+				</DialogPrimitive.Close>
+			</DialogPrimitive.Content>
+		</DialogPortal>
+	);
+}
+
 function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
 	return <div className={cn("grid gap-1.5", className)} {...props} />;
 }
@@ -107,6 +134,7 @@ export {
 	DialogDescription,
 	DialogFooter,
 	DialogHeader,
+	DialogSideContent,
 	DialogTitle,
 	DialogTrigger,
 };

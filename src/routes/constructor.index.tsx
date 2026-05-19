@@ -69,8 +69,8 @@ function QuestionDraftFields({
 				</FieldLabel>
 				<Select
 					id={`${idPrefix}-type`}
-					onChange={(event) => {
-						const type = event.target.value as QuestionType;
+					onValueChange={(value) => {
+						const type = value as QuestionType;
 						setDraft((current) => {
 							const nextDraft = createEmptyDraft(type);
 
@@ -82,14 +82,12 @@ function QuestionDraftFields({
 							};
 						});
 					}}
+					options={questionTypeOptions.map((option) => ({
+						label: t(option.labelKey),
+						value: option.value,
+					}))}
 					value={draft.type}
-				>
-					{questionTypeOptions.map((option) => (
-						<option key={option.value} value={option.value}>
-							{t(option.labelKey)}
-						</option>
-					))}
-				</Select>
+				/>
 			</div>
 
 			<div className={fieldGroupClassName}>
