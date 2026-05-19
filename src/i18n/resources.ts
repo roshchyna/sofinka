@@ -30,6 +30,9 @@ export const resources = {
 				questionEyebrow: "Question {{number}}",
 				mascotAria: "Muza companion",
 			},
+			reward: {
+				correctAnswerToast: "Correct! +1 star",
+			},
 			notFound: {
 				title: "The page you requested does not exist.",
 				animationAria: "404 page illustration",
@@ -213,11 +216,14 @@ export const resources = {
 			},
 			home: {
 				questionEyebrow: "Запитання {{number}}",
-				mascotAria: "Muza companion",
+				mascotAria: "Помічниця Муза",
+			},
+			reward: {
+				correctAnswerToast: "Правильно! +1 зірка",
 			},
 			notFound: {
 				title: "Сторінки, яку ти шукаєш, не існує.",
-				animationAria: "404 page illustration",
+				animationAria: "Ілюстрація сторінки 404",
 				homeLink: "На головну",
 			},
 			constructor: {
@@ -397,11 +403,14 @@ export const resources = {
 			},
 			home: {
 				questionEyebrow: "Вопрос {{number}}",
-				mascotAria: "Muza companion",
+				mascotAria: "Помощница Муза",
+			},
+			reward: {
+				correctAnswerToast: "Верно! +1 звезда",
 			},
 			notFound: {
 				title: "Запрошенная вами страница не существует.",
-				animationAria: "404 page illustration",
+				animationAria: "Иллюстрация страницы 404",
 				homeLink: "На главную",
 			},
 			constructor: {
