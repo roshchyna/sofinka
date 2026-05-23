@@ -34,6 +34,16 @@ function renderWithQueryClient(children: ReactNode) {
 
 describe("GenerateQuestionsDialog", () => {
 	beforeEach(async () => {
+		if (!HTMLElement.prototype.hasPointerCapture) {
+			HTMLElement.prototype.hasPointerCapture = vi.fn(() => false);
+		}
+		if (!HTMLElement.prototype.releasePointerCapture) {
+			HTMLElement.prototype.releasePointerCapture = vi.fn();
+		}
+		if (!HTMLElement.prototype.scrollIntoView) {
+			HTMLElement.prototype.scrollIntoView = vi.fn();
+		}
+
 		await i18n.changeLanguage("ua");
 		window.localStorage.clear();
 		window.localStorage.setItem("sofinka.childAge", "8");
@@ -82,11 +92,14 @@ describe("GenerateQuestionsDialog", () => {
 				value: "2",
 			},
 		});
-		fireEvent.change(screen.getByLabelText("Тип запитання"), {
-			target: {
-				value: "odd-one-out",
-			},
+		fireEvent.pointerDown(screen.getByLabelText("Тип запитання"), {
+			button: 0,
+			ctrlKey: false,
+			pointerType: "mouse",
 		});
+		fireEvent.click(
+			await screen.findByRole("option", { name: "Знайди зайве" }),
+		);
 		fireEvent.submit(screen.getByLabelText("Тема").closest("form") as Element);
 
 		await waitFor(() => expect(globalThis.fetch).toHaveBeenCalledTimes(1));
