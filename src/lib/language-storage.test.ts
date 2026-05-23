@@ -17,9 +17,9 @@ describe("language storage", () => {
 	});
 
 	it("returns a saved supported language", () => {
-		window.localStorage.setItem("sofinka.language", "uk");
+		window.localStorage.setItem("sofinka.language", "ua");
 
-		expect(getLanguage()).toBe("uk");
+		expect(getLanguage()).toBe("ua");
 	});
 
 	it("ignores unsupported stored language values", () => {

@@ -132,7 +132,7 @@ export const defaultQuestionsByLanguage: Record<Language, Question[]> = {
 			],
 		},
 	],
-	uk: [
+	ua: [
 		{
 			id: 1,
 			type: "single-choice",

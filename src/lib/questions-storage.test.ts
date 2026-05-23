@@ -29,7 +29,7 @@ describe("questions storage", () => {
 
 	it("returns localized default questions when storage is empty", () => {
 		expect(getQuestions("en")).toBe(getDefaultQuestions("en"));
-		expect(getQuestions("uk")).toBe(getDefaultQuestions("uk"));
+		expect(getQuestions("ua")).toBe(getDefaultQuestions("ua"));
 		expect(getQuestions("ru")).toBe(getDefaultQuestions("ru"));
 	});
 
@@ -47,12 +47,12 @@ describe("questions storage", () => {
 
 	it("uses current saved language when language argument is omitted", () => {
 		const questions = [makeQuestion(102, "Ukrainian question")];
-		window.localStorage.setItem("sofinka.language", "uk");
+		window.localStorage.setItem("sofinka.language", "ua");
 
 		saveQuestions(questions);
 
 		expect(getQuestions()).toEqual(questions);
-		expect(window.localStorage.getItem("sofinka.questions.uk")).toBe(
+		expect(window.localStorage.getItem("sofinka.questions.ua")).toBe(
 			JSON.stringify(questions),
 		);
 	});
@@ -66,9 +66,9 @@ describe("questions storage", () => {
 	});
 
 	it("ignores invalid stored question JSON", () => {
-		window.localStorage.setItem("sofinka.questions.uk", "{bad json");
+		window.localStorage.setItem("sofinka.questions.ua", "{bad json");
 
-		expect(getQuestions("uk")).toBe(getDefaultQuestions("uk"));
+		expect(getQuestions("ua")).toBe(getDefaultQuestions("ua"));
 	});
 
 	it("resets questions to localized defaults and dispatches the changed event", () => {

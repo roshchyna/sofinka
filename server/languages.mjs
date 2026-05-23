@@ -22,7 +22,7 @@ export const LANGUAGE_CONFIGS = {
 		falseLabel: "False",
 	},
 	Ukrainian: {
-		code: "uk",
+		code: "ua",
 		name: "Ukrainian",
 		answer: "Відповідь",
 		concept: "Поняття",
