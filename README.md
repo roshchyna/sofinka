@@ -1,5 +1,7 @@
 # Sofinka
 
+[![CI](https://github.com/roshchyna/sofinka/actions/workflows/ci.yml/badge.svg)](https://github.com/roshchyna/sofinka/actions/workflows/ci.yml)
+
 Sofinka is a small quiz app for kids. It has a play mode, a question constructor, and an optional AI-powered generator for creating new quiz questions.
 
 The app currently supports English, Ukrainian, and Russian. Questions are stored locally per language, so switching the app language also switches the active question set.

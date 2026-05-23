@@ -12,7 +12,6 @@ describe("language helpers", () => {
 		expect(isLanguage("en")).toBe(true);
 		expect(isLanguage("ua")).toBe(true);
 		expect(isLanguage("ru")).toBe(true);
-		expect(isLanguage("ua")).toBe(false);
 		expect(isLanguage("Ukrainian")).toBe(false);
 	});
 
