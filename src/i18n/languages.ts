@@ -1,4 +1,4 @@
-export const languages = ["en", "uk", "ru"] as const;
+export const languages = ["en", "ua", "ru"] as const;
 
 export type Language = (typeof languages)[number];
 
@@ -6,13 +6,13 @@ export const DEFAULT_LANGUAGE: Language = "en";
 
 export const languageOptions: { label: string; value: Language }[] = [
 	{ label: "English", value: "en" },
-	{ label: "Ukrainian", value: "uk" },
+	{ label: "Ukrainian", value: "ua" },
 	{ label: "Russian", value: "ru" },
 ];
 
 export const languageNames: Record<Language, string> = {
 	en: "English",
-	uk: "Ukrainian",
+	ua: "Ukrainian",
 	ru: "Russian",
 } as const;
 

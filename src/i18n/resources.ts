@@ -187,7 +187,7 @@ export const resources = {
 			},
 		},
 	},
-	uk: {
+	ua: {
 		translation: {
 			nav: {
 				quiz: "Тести",

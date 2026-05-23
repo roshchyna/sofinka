@@ -34,7 +34,7 @@ function renderWithQueryClient(children: ReactNode) {
 
 describe("GenerateQuestionsDialog", () => {
 	beforeEach(async () => {
-		await i18n.changeLanguage("uk");
+		await i18n.changeLanguage("ua");
 		window.localStorage.clear();
 		window.localStorage.setItem("sofinka.childAge", "8");
 		vi.stubGlobal(
@@ -73,13 +73,19 @@ describe("GenerateQuestionsDialog", () => {
 
 		fireEvent.click(screen.getByRole("button", { name: "Згенерувати" }));
 		fireEvent.change(screen.getByLabelText("Тема"), {
-			target: { value: "Космос" },
+			target: {
+				value: "Космос",
+			},
 		});
 		fireEvent.change(screen.getByLabelText("Кількість"), {
-			target: { value: "2" },
+			target: {
+				value: "2",
+			},
 		});
 		fireEvent.change(screen.getByLabelText("Тип запитання"), {
-			target: { value: "odd-one-out" },
+			target: {
+				value: "odd-one-out",
+			},
 		});
 		fireEvent.submit(screen.getByLabelText("Тема").closest("form") as Element);
 

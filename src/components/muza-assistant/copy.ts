@@ -22,7 +22,7 @@ export const muzaCopy = {
 		waiting: "Working on it...",
 		writing: "Writing response...",
 	},
-	uk: {
+	ua: {
 		beta: "НОВЕ",
 		clear: "Очистити історію",
 		clearCancel: "Скасувати",
