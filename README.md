@@ -82,7 +82,9 @@ pnpm dev          # Start the frontend
 pnpm dev:server   # Start the AI backend
 pnpm build        # Build for production
 pnpm test         # Run Vitest tests
+pnpm test:coverage # Run tests with coverage
 pnpm check        # Run Biome checks
+pnpm typecheck    # Run TypeScript checks
 pnpm format       # Format files with Biome
 pnpm lint         # Run Biome lint
 ```

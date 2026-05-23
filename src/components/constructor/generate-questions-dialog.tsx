@@ -79,8 +79,8 @@ export function GenerateQuestionsDialog({
 	const language = toLanguage(i18n.resolvedLanguage ?? i18n.language);
 	const [open, setOpen] = useState(false);
 	const [topic, setTopic] = useState(() => t("generate.defaultTopic"));
-	const [age, setAge] = useState(() => getChildAge());
-	const [count, setCount] = useState(1);
+	const [age, setAge] = useState(() => String(getChildAge()));
+	const [count, setCount] = useState("1");
 	const [type, setType] = useState<QuestionType>("single-choice");
 
 	const mutation = useMutation({
@@ -98,10 +98,12 @@ export function GenerateQuestionsDialog({
 	function submitForm(event: React.FormEvent<HTMLFormElement>) {
 		event.preventDefault();
 
+		if (age.trim() === "" || count.trim() === "") return;
+
 		mutation.mutate({
 			topic: topic.trim(),
-			age,
-			count,
+			age: Number(age),
+			count: Number(count),
 			language: getLanguageName(language),
 			type,
 			emptyErrorMessage: t("generate.emptyError"),
@@ -113,7 +115,7 @@ export function GenerateQuestionsDialog({
 		<Dialog
 			onOpenChange={(nextOpen) => {
 				setOpen(nextOpen);
-				if (nextOpen) setAge(getChildAge());
+				if (nextOpen) setAge(String(getChildAge()));
 			}}
 			open={open}
 		>
@@ -151,7 +153,7 @@ export function GenerateQuestionsDialog({
 								<Input
 									id="generate-age"
 									min={3}
-									onChange={(event) => setAge(Number(event.target.value))}
+									onChange={(event) => setAge(event.target.value)}
 									required
 									type="number"
 									value={age}
@@ -166,7 +168,7 @@ export function GenerateQuestionsDialog({
 									id="generate-count"
 									max={10}
 									min={1}
-									onChange={(event) => setCount(Number(event.target.value))}
+									onChange={(event) => setCount(event.target.value)}
 									required
 									type="number"
 									value={count}
