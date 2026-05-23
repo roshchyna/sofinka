@@ -311,7 +311,7 @@ function ConstructorPage() {
 		>
 			<div className="absolute inset-0 bg-white/70 dark:bg-zinc-950/75" />
 
-			<div className="relative mx-auto grid w-full max-w-6xl gap-6">
+			<div className="relative mx-auto grid w-full max-w-5xl gap-6">
 				<Card>
 					<CardHeader>
 						<div className="flex items-center justify-between gap-3">

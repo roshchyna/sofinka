@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   checks:
-    name: Check, test, and build
+    name: Check, typecheck, test, and build
     runs-on: ubuntu-latest
 
     steps:
@@ -33,6 +33,9 @@ jobs:
 
       - name: Run Biome checks
         run: pnpm check
+
+      - name: Run TypeScript checks
+        run: pnpm typecheck
 
       - name: Run tests
         run: pnpm test
