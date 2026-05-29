@@ -2,17 +2,31 @@
 
 [![CI](https://github.com/roshchyna/sofinka/actions/workflows/ci.yml/badge.svg)](https://github.com/roshchyna/sofinka/actions/workflows/ci.yml)
 
-Sofinka is a small quiz app for kids. It has a play mode, a question constructor, and an optional AI-powered generator for creating new quiz questions.
+Sofinka is a multilingual quiz app for kids. It includes a play mode, a question constructor, local per-language question storage, and an optional AI generator for creating new quiz questions.
 
-The app currently supports English, Ukrainian, and Russian. Questions are stored locally per language, so switching the app language also switches the active question set.
+The app supports English, Ukrainian, and Russian. Switching the language also switches the active saved question set.
 
-## What It Does
+## Links
+
+- Repository: https://github.com/roshchyna/sofinka
+- CI: https://github.com/roshchyna/sofinka/actions/workflows/ci.yml
+- Live demo: Not deployed yet
+
+## Screenshots
+
+Screenshots should be added after deployment so recruiters can scan the product quickly:
+
+- Home/play mode: `docs/screenshots/home.png`
+- Question constructor: `docs/screenshots/constructor.png`
+- AI generation dialog: `docs/screenshots/generate-questions.png`
+
+## Product Scope
 
 - Play quizzes with instant feedback.
-- Create and edit questions in the constructor.
-- Generate new questions by topic, age, language, count, and question type.
+- Create, edit, delete, and restore questions in the constructor.
+- Generate questions by topic, age, language, count, and question type.
+- Persist custom questions in local storage by selected language.
 - Switch between English, Ukrainian, and Russian.
-- Save questions in local storage.
 - Toggle light and dark themes.
 
 Supported question types:
@@ -27,6 +41,34 @@ Supported question types:
 - Image choice
 - Odd one out
 
+## Architecture
+
+- `src/routes` contains TanStack Router routes, including localized app pages and API route handlers.
+- `src/components/questions` contains reusable question renderers and answer-state logic.
+- `src/components/constructor` contains the editor flow for creating and updating each question type.
+- `src/lib` contains browser persistence helpers for language, age, and question storage.
+- `src/i18n` contains language metadata and UI translations.
+- `server` contains shared AI prompt, parsing, normalization, and environment helpers used by API routes and tests.
+
+## Technical Decisions
+
+- React and TanStack Router provide route-level structure while keeping the UI component model simple.
+- TypeScript is strict and checked separately from the production build.
+- i18next keeps UI copy and language routing explicit.
+- Local storage is used for a lightweight portfolio-friendly persistence model.
+- OpenRouter is isolated behind server-side handlers so API keys are not exposed to the browser.
+- Vitest covers business logic, storage helpers, question rendering behavior, AI payloads, JSON parsing, and generated-question normalization.
+- Biome handles formatting and lint checks with a fast single-tool workflow.
+
+## UX, AI, and i18n Work
+
+- Kid-friendly quiz feedback with clear correct/incorrect states.
+- Constructor supports multiple question shapes without forcing one generic editor UI.
+- Generated AI output is parsed and normalized before entering the app state.
+- Question storage is language-specific, so Ukrainian, English, and Russian content do not overwrite each other.
+- Language codes are mapped to full language names before AI generation requests.
+- Theme is applied before hydration to avoid a visible flash of the wrong theme.
+
 ## Tech Stack
 
 - React
@@ -37,7 +79,7 @@ Supported question types:
 - TanStack Query
 - Vitest
 - Biome
-- OpenRouter for question generation
+- OpenRouter
 
 ## Getting Started
 
@@ -78,15 +120,45 @@ OPENROUTER_MODEL=openrouter/free
 ## Scripts
 
 ```bash
-pnpm dev          # Start the frontend
-pnpm dev:server   # Start the AI backend
-pnpm build        # Build for production
-pnpm test         # Run Vitest tests
+pnpm dev           # Start the frontend
+pnpm dev:server    # Start the AI backend
+pnpm build         # Build for production
+pnpm test          # Run Vitest tests
 pnpm test:coverage # Run tests with coverage
-pnpm check        # Run Biome checks
-pnpm typecheck    # Run TypeScript checks
-pnpm format       # Format files with Biome
-pnpm lint         # Run Biome lint
+pnpm check         # Run Biome checks
+pnpm typecheck     # Run TypeScript checks
+pnpm format        # Format files with Biome
+pnpm lint          # Run Biome lint
+```
+
+## Quality Checks
+
+Run the same checks locally before opening a pull request:
+
+```bash
+pnpm check
+pnpm typecheck
+pnpm test
+pnpm build
+```
+
+Generate a coverage report:
+
+```bash
+pnpm test:coverage
+```
+
+The HTML coverage report is written to `coverage/index.html`.
+
+## GitHub Actions
+
+CI runs on every push and pull request. The workflow installs dependencies with `pnpm install --frozen-lockfile` and then runs:
+
+```bash
+pnpm check
+pnpm typecheck
+pnpm test
+pnpm build
 ```
 
 ## Testing
@@ -100,12 +172,6 @@ The test suite covers:
 - Answer correctness helpers
 - Question card behavior
 - AI generation request payloads
-
-Run tests with:
-
-```bash
-pnpm test
-```
 
 ## Production Notes
 

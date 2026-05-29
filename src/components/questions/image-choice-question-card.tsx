@@ -54,9 +54,9 @@ export function ImageChoiceQuestionCard({
 								"h-auto flex-col gap-3 whitespace-normal px-4 py-4 text-center",
 								isSelected && theme.selected,
 								showCorrect &&
-									"border-emerald-600 bg-emerald-50 text-emerald-950 hover:bg-emerald-50 dark:border-emerald-400 dark:bg-emerald-900 dark:text-zinc-300 dark:hover:bg-emerald-900",
+									"border-emerald-600 bg-emerald-50 text-emerald-950 hover:bg-emerald-50 dark:border-emerald-400 dark:bg-emerald-950 dark:text-emerald-50 dark:hover:bg-emerald-950",
 								showWrong &&
-									"border-red-600 bg-red-50 text-red-950 hover:bg-red-50 dark:border-red-400 dark:bg-red-900 dark:text-zinc-300 dark:hover:bg-red-900",
+									"border-red-600 bg-red-50 text-red-950 hover:bg-red-50 dark:border-red-400 dark:bg-red-950 dark:text-red-50 dark:hover:bg-red-950",
 							)}
 							key={option.id}
 							onClick={() => answer.chooseOption(option.id)}
@@ -83,13 +83,28 @@ export function ImageChoiceQuestionCard({
 							<span className="flex items-center gap-2 font-medium">
 								{option.label}
 								{showCorrect && (
-									<CheckCircle2 className="text-emerald-600 dark:text-emerald-300" />
+									<>
+										<span className="sr-only">
+											{t("questionCard.optionCorrect")}
+										</span>
+										<CheckCircle2 className="text-emerald-600 dark:text-emerald-300" />
+									</>
 								)}
 								{showWrong && (
-									<XCircle className="text-red-600 dark:text-red-300" />
+									<>
+										<span className="sr-only">
+											{t("questionCard.optionIncorrect")}
+										</span>
+										<XCircle className="text-red-600 dark:text-red-300" />
+									</>
 								)}
 								{!answer.isSubmitted && isSelected && (
-									<Circle className="fill-zinc-950 text-zinc-950 dark:fill-zinc-50 dark:text-zinc-300" />
+									<>
+										<span className="sr-only">
+											{t("questionCard.optionSelected")}
+										</span>
+										<Circle className="fill-zinc-950 text-zinc-950 dark:fill-zinc-50 dark:text-zinc-300" />
+									</>
 								)}
 							</span>
 						</Button>

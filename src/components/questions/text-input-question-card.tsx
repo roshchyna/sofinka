@@ -68,10 +68,10 @@ export function TextInputQuestionCard({
 							"pr-10",
 							isSubmitted &&
 								isCorrect &&
-								"border-emerald-600 bg-emerald-50 text-emerald-950 dark:border-emerald-400 dark:bg-emerald-900 dark:text-zinc-300",
+								"border-emerald-600 bg-emerald-50 text-emerald-950 dark:border-emerald-400 dark:bg-emerald-950 dark:text-emerald-50",
 							isSubmitted &&
 								!isCorrect &&
-								"border-red-600 bg-red-50 text-red-950 dark:border-red-400 dark:bg-red-900 dark:text-zinc-300",
+								"border-red-600 bg-red-50 text-red-950 dark:border-red-400 dark:bg-red-950 dark:text-red-50",
 						)}
 						disabled={isSubmitted}
 						onChange={(event) => setAnswer(event.target.value)}

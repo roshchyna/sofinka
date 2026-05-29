@@ -80,10 +80,10 @@ export function MatchingQuestionCard({ question }: MatchingQuestionCardProps) {
 			theme={theme}
 		>
 			<div className="grid gap-4 sm:grid-cols-2">
-				<div className="grid gap-3">
-					<p className="font-medium text-sm text-zinc-600 dark:text-zinc-300">
+				<fieldset className="grid gap-3">
+					<legend className="font-medium text-sm text-zinc-700 dark:text-zinc-200">
 						{t("questionCard.matchingLeftTitle")}
-					</p>
+					</legend>
 					{question.pairs.map((pair) => {
 						const isSelected = selectedLeftId === pair.id;
 						const matchedRightLabel = getRightLabel(matches[pair.id]);
@@ -99,12 +99,13 @@ export function MatchingQuestionCard({ question }: MatchingQuestionCardProps) {
 									"h-auto justify-start whitespace-normal px-4 py-4 text-left",
 									isSelected && theme.selected,
 									showCorrect &&
-										"border-emerald-600 bg-emerald-50 text-emerald-950 hover:bg-emerald-50 dark:border-emerald-400 dark:bg-emerald-900 dark:text-zinc-300 dark:hover:bg-emerald-900",
+										"border-emerald-600 bg-emerald-50 text-emerald-950 hover:bg-emerald-50 dark:border-emerald-400 dark:bg-emerald-950 dark:text-emerald-50 dark:hover:bg-emerald-950",
 									showWrong &&
-										"border-red-600 bg-red-50 text-red-950 hover:bg-red-50 dark:border-red-400 dark:bg-red-900 dark:text-zinc-300 dark:hover:bg-red-900",
+										"border-red-600 bg-red-50 text-red-950 hover:bg-red-50 dark:border-red-400 dark:bg-red-950 dark:text-red-50 dark:hover:bg-red-950",
 								)}
 								key={pair.id}
 								onClick={() => chooseLeft(pair.id)}
+								aria-pressed={isSelected}
 								size="xl"
 								variant="outline"
 							>
@@ -118,20 +119,30 @@ export function MatchingQuestionCard({ question }: MatchingQuestionCardProps) {
 									)}
 								</span>
 								{showCorrect && (
-									<CheckCircle2 className="text-emerald-600 dark:text-emerald-300" />
+									<>
+										<span className="sr-only">
+											{t("questionCard.optionCorrect")}
+										</span>
+										<CheckCircle2 className="text-emerald-600 dark:text-emerald-300" />
+									</>
 								)}
 								{showWrong && (
-									<XCircle className="text-red-600 dark:text-red-300" />
+									<>
+										<span className="sr-only">
+											{t("questionCard.optionIncorrect")}
+										</span>
+										<XCircle className="text-red-600 dark:text-red-300" />
+									</>
 								)}
 							</Button>
 						);
 					})}
-				</div>
+				</fieldset>
 
-				<div className="grid gap-3">
-					<p className="font-medium text-sm text-zinc-600 dark:text-zinc-300">
+				<fieldset className="grid gap-3">
+					<legend className="font-medium text-sm text-zinc-700 dark:text-zinc-200">
 						{t("questionCard.matchingRightTitle")}
-					</p>
+					</legend>
 					{rightOptions.map((pair) => {
 						const isMatched = Object.values(matches).includes(pair.id);
 
@@ -143,7 +154,7 @@ export function MatchingQuestionCard({ question }: MatchingQuestionCardProps) {
 										"border-zinc-300 bg-white/70 text-zinc-500 dark:border-zinc-700 dark:bg-zinc-800/70 dark:text-zinc-400",
 									selectedLeftId && !isMatched && theme.selected,
 								)}
-								disabled={isSubmitted}
+								disabled={!selectedLeftId || isSubmitted}
 								key={pair.id}
 								onClick={() => chooseRight(pair.id)}
 								size="xl"
@@ -153,7 +164,7 @@ export function MatchingQuestionCard({ question }: MatchingQuestionCardProps) {
 							</Button>
 						);
 					})}
-				</div>
+				</fieldset>
 			</div>
 		</QuestionCardShell>
 	);
