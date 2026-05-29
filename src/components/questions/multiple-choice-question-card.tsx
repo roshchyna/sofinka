@@ -32,7 +32,8 @@ export function MultipleChoiceQuestionCard({
 			question={question}
 			theme={theme}
 		>
-			<div className="grid gap-3 sm:grid-cols-2">
+			<fieldset className="grid gap-3 sm:grid-cols-2">
+				<legend className="sr-only">{question.title}</legend>
 				{question.options.map((option) => (
 					<AnswerOptionButton
 						isCorrect={option.isCorrect}
@@ -46,7 +47,7 @@ export function MultipleChoiceQuestionCard({
 						{option.label}
 					</AnswerOptionButton>
 				))}
-			</div>
+			</fieldset>
 		</QuestionCardShell>
 	);
 }

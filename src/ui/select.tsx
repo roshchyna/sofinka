@@ -45,7 +45,7 @@ function Select({
 		>
 			<SelectPrimitive.Trigger
 				className={cn(
-					"flex h-10 w-full items-center justify-between gap-2 rounded-md border border-zinc-200 bg-white px-3 text-base text-zinc-950 shadow-sm outline-none focus-visible:border-zinc-950 focus-visible:ring-2 focus-visible:ring-zinc-950/10 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300 dark:focus-visible:border-zinc-50 dark:focus-visible:ring-zinc-50/10",
+					"flex h-10 w-full items-center justify-between gap-2 rounded-md border border-zinc-200 bg-white px-3 text-base text-zinc-950 shadow-sm outline-none focus-visible:border-zinc-950 focus-visible:ring-2 focus-visible:ring-zinc-950/30 disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:focus-visible:border-zinc-50 dark:focus-visible:ring-zinc-50/30",
 					className,
 				)}
 				disabled={disabled}
@@ -71,7 +71,7 @@ function Select({
 					<SelectPrimitive.Viewport>
 						{options.map((option) => (
 							<SelectPrimitive.Item
-								className="relative flex cursor-default select-none items-center rounded-sm py-1.5 pr-2 pl-7 outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-100 data-[disabled]:opacity-50 dark:data-[highlighted]:bg-zinc-800"
+								className="relative flex cursor-default select-none items-center rounded-sm py-1.5 pr-2 pl-7 outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-zinc-100 data-[disabled]:opacity-50 dark:data-[highlighted]:bg-zinc-800 dark:data-[highlighted]:text-zinc-50"
 								disabled={option.disabled}
 								key={option.value}
 								value={option.value}

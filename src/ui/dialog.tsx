@@ -48,7 +48,7 @@ function DialogContent({
 				{...props}
 			>
 				{children}
-				<DialogPrimitive.Close className="absolute top-4 right-4 rounded-sm text-zinc-500 opacity-70 outline-none transition-opacity hover:opacity-100 focus-visible:ring-2 focus-visible:ring-zinc-950/10 dark:focus-visible:ring-zinc-50/10">
+				<DialogPrimitive.Close className="absolute top-4 right-4 rounded-sm text-zinc-600 opacity-80 outline-none transition-opacity hover:opacity-100 focus-visible:ring-2 focus-visible:ring-zinc-950/30 dark:text-zinc-300 dark:focus-visible:ring-zinc-50/30">
 					<X className="size-4" />
 					<span className="sr-only">{t("common.close")}</span>
 				</DialogPrimitive.Close>
@@ -75,7 +75,7 @@ function DialogSideContent({
 				{...props}
 			>
 				{children}
-				<DialogPrimitive.Close className="absolute top-4 right-4 rounded-sm text-zinc-500 opacity-70 outline-none transition-opacity hover:opacity-100 focus-visible:ring-2 focus-visible:ring-zinc-950/10 dark:focus-visible:ring-zinc-50/10">
+				<DialogPrimitive.Close className="absolute top-4 right-4 rounded-sm text-zinc-600 opacity-80 outline-none transition-opacity hover:opacity-100 focus-visible:ring-2 focus-visible:ring-zinc-950/30 dark:text-zinc-300 dark:focus-visible:ring-zinc-50/30">
 					<X className="size-4" />
 					<span className="sr-only">{t("common.close")}</span>
 				</DialogPrimitive.Close>

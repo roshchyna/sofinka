@@ -91,7 +91,7 @@ export function SortingQuestionCard({ question }: SortingQuestionCardProps) {
 		>
 			<div className="grid gap-5">
 				<div className="grid gap-3">
-					<p className="font-medium text-sm text-zinc-600 dark:text-zinc-300">
+					<p className="font-medium text-sm text-zinc-700 dark:text-zinc-200">
 						{t("questionCard.sortingItemsTitle")}
 					</p>
 					<div className="grid gap-2 sm:grid-cols-2">
@@ -106,6 +106,7 @@ export function SortingQuestionCard({ question }: SortingQuestionCardProps) {
 									)}
 									key={item.id}
 									onClick={() => chooseItem(item.id)}
+									aria-pressed={isSelected}
 									size="xl"
 									variant="outline"
 								>
@@ -126,27 +127,40 @@ export function SortingQuestionCard({ question }: SortingQuestionCardProps) {
 							isSubmitted && categoryItems.length > 0 && !hasWrongItem;
 
 						return (
-							<div
+							<fieldset
 								className={cn(
 									"grid min-h-36 gap-3 rounded-md border border-zinc-200 bg-white/80 p-4 dark:border-zinc-800 dark:bg-zinc-900/80",
 									selectedItemId && !isSubmitted && theme.selected,
 									isSubmitted &&
 										showCorrect &&
-										"border-emerald-600 bg-emerald-50 dark:border-emerald-400 dark:bg-emerald-900",
+										"border-emerald-600 bg-emerald-50 dark:border-emerald-400 dark:bg-emerald-950",
 									isSubmitted &&
 										hasWrongItem &&
-										"border-red-600 bg-red-50 dark:border-red-400 dark:bg-red-900",
+										"border-red-600 bg-red-50 dark:border-red-400 dark:bg-red-950",
 								)}
 								key={category.id}
 							>
+								<legend className="sr-only">{category.label}</legend>
 								<div className="flex items-center justify-between gap-2">
-									<p className="font-semibold">{category.label}</p>
+									<p aria-hidden="true" className="font-semibold">
+										{category.label}
+									</p>
 									{isSubmitted &&
 										(hasWrongItem ? (
-											<XCircle className="text-red-600 dark:text-red-300" />
+											<>
+												<span className="sr-only">
+													{t("questionCard.optionIncorrect")}
+												</span>
+												<XCircle className="text-red-600 dark:text-red-300" />
+											</>
 										) : (
 											categoryItems.length > 0 && (
-												<CheckCircle2 className="text-emerald-600 dark:text-emerald-300" />
+												<>
+													<span className="sr-only">
+														{t("questionCard.optionCorrect")}
+													</span>
+													<CheckCircle2 className="text-emerald-600 dark:text-emerald-300" />
+												</>
 											)
 										))}
 								</div>
@@ -158,11 +172,12 @@ export function SortingQuestionCard({ question }: SortingQuestionCardProps) {
 												"h-auto justify-start whitespace-normal px-3 py-2 text-left",
 												isSubmitted &&
 													item.categoryId === category.id &&
-													"border-emerald-600 bg-emerald-50 text-emerald-950 hover:bg-emerald-50 dark:border-emerald-400 dark:bg-emerald-900 dark:text-zinc-300 dark:hover:bg-emerald-900",
+													"border-emerald-600 bg-emerald-50 text-emerald-950 hover:bg-emerald-50 dark:border-emerald-400 dark:bg-emerald-950 dark:text-emerald-50 dark:hover:bg-emerald-950",
 												isSubmitted &&
 													item.categoryId !== category.id &&
-													"border-red-600 bg-red-50 text-red-950 hover:bg-red-50 dark:border-red-400 dark:bg-red-900 dark:text-zinc-300 dark:hover:bg-red-900",
+													"border-red-600 bg-red-50 text-red-950 hover:bg-red-50 dark:border-red-400 dark:bg-red-950 dark:text-red-50 dark:hover:bg-red-950",
 											)}
+											disabled={isSubmitted}
 											key={item.id}
 											onClick={() => pickPlacedItem(item.id)}
 											size="md"
@@ -184,7 +199,7 @@ export function SortingQuestionCard({ question }: SortingQuestionCardProps) {
 											})
 										: t("questionCard.sortingPickItem")}
 								</Button>
-							</div>
+							</fieldset>
 						);
 					})}
 				</div>
