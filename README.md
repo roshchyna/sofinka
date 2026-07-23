@@ -10,7 +10,7 @@ The app supports English, Ukrainian, and Russian. Switching the language also sw
 
 - Repository: https://github.com/roshchyna/sofinka
 - CI: https://github.com/roshchyna/sofinka/actions/workflows/ci.yml
-- Live demo: Not deployed yet
+- Production: [mysofinka.com](https://mysofinka.com)
 
 ## Screenshots
 
