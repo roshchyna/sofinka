@@ -4,11 +4,13 @@ import {
 	Menu,
 	MessageCircle,
 	Moon,
+	Sparkles,
 	Sun,
 	UserCheck,
 } from "lucide-react";
 import { type PropsWithChildren, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { FluidCursor } from "@/components/fluid-cursor";
 import MuzaAssistant from "@/components/muza-assistant";
 import { MuzaAssistantProvider } from "@/components/muza-assistant/context";
 import { getMuzaCopy } from "@/components/muza-assistant/copy";
@@ -30,6 +32,8 @@ import {
 } from "@/ui/dialog";
 import { Select } from "@/ui/select";
 
+const FLUID_EFFECT_STORAGE_KEY = "fluid-effect-enabled";
+
 export default function ApplicationShell({ children }: PropsWithChildren) {
 	const navigate = useNavigate();
 	const pathname = useRouterState({
@@ -40,6 +44,7 @@ export default function ApplicationShell({ children }: PropsWithChildren) {
 	const [childAge, setChildAge] = useState(7);
 	const [isDark, setIsDark] = useState(true);
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+	const [isFluidEffectEnabled, setIsFluidEffectEnabled] = useState(false);
 	const isTransitioning = useRouterState({
 		select: (state) => state.isTransitioning,
 	});
@@ -49,6 +54,9 @@ export default function ApplicationShell({ children }: PropsWithChildren) {
 		const syncChildAge = () => setChildAge(getChildAge());
 
 		syncChildAge();
+		setIsFluidEffectEnabled(
+			window.localStorage.getItem(FLUID_EFFECT_STORAGE_KEY) !== "false",
+		);
 		window.addEventListener(CHILD_AGE_CHANGED_EVENT, syncChildAge);
 		window.addEventListener("storage", syncChildAge);
 
@@ -90,6 +98,13 @@ export default function ApplicationShell({ children }: PropsWithChildren) {
 		setIsDark(isThemeDark(nextTheme));
 	}
 
+	function toggleFluidEffect() {
+		setIsFluidEffectEnabled((enabled) => {
+			window.localStorage.setItem(FLUID_EFFECT_STORAGE_KEY, String(!enabled));
+			return !enabled;
+		});
+	}
+
 	function changeChildAge(age: number) {
 		setChildAge(age);
 		saveChildAge(age);
@@ -124,6 +139,9 @@ export default function ApplicationShell({ children }: PropsWithChildren) {
 			: "flex items-center gap-2 text-zinc-600 text-xs dark:text-zinc-400";
 		const childAgeId = `${idPrefix}-child-age`;
 		const languageId = `${idPrefix}-app-language`;
+		const fluidEffectLabel = t(
+			isFluidEffectEnabled ? "nav.disableFluidEffect" : "nav.enableFluidEffect",
+		);
 
 		return (
 			<>
@@ -218,12 +236,25 @@ export default function ApplicationShell({ children }: PropsWithChildren) {
 						</span>
 					)}
 				</Button>
+				<Button
+					aria-label={fluidEffectLabel}
+					aria-pressed={isFluidEffectEnabled}
+					className={isMobile ? "h-10 justify-start" : undefined}
+					onClick={toggleFluidEffect}
+					size="sm"
+					title={fluidEffectLabel}
+					variant="outline"
+				>
+					<Sparkles className={isFluidEffectEnabled ? "text-pink-500" : ""} />
+					{isMobile && <span>{fluidEffectLabel}</span>}
+				</Button>
 			</>
 		);
 	}
 
 	return (
 		<MuzaAssistantProvider>
+			<FluidCursor enabled={isFluidEffectEnabled} />
 			<div className="flex min-h-screen flex-col bg-white text-zinc-950 dark:bg-zinc-950 dark:text-zinc-300">
 				<header className="shrink-0 border-zinc-200 border-b bg-pink-50 dark:border-zinc-800 dark:bg-zinc-900">
 					<div className="mx-auto flex min-h-14 max-w-6xl flex-wrap items-center justify-between gap-3 px-6 py-2">
