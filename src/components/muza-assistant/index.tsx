@@ -15,6 +15,7 @@ import { CHILD_AGE_CHANGED_EVENT, getChildAge } from "@/lib/child-age-storage";
 import { LANGUAGE_CHANGED_EVENT } from "@/lib/language-storage";
 import {
 	Dialog,
+	DialogDescription,
 	DialogSideContent,
 	DialogTitle,
 	DialogTrigger,
@@ -91,13 +92,16 @@ export default function MuzaAssistant({
 				<DialogTrigger asChild>
 					<MuzaBadge
 						betaLabel={copy.beta}
-						className="fixed right-4 bottom-4 z-40 sm:right-6 sm:bottom-6"
+						className="fixed right-4 bottom-22 z-40 sm:right-6"
 						title={copy.title}
 					/>
 				</DialogTrigger>
 			)}
 			<DialogSideContent className="w-[min(32rem,calc(100vw-1rem))] gap-0 overflow-hidden p-0">
 				<DialogTitle className="sr-only">{copy.title}</DialogTitle>
+				<DialogDescription className="sr-only">
+					{copy.subtitle}
+				</DialogDescription>
 				<MuzaPage endpoint={endpoint} />
 			</DialogSideContent>
 		</Dialog>

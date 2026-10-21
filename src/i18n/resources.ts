@@ -14,6 +14,8 @@ export const resources = {
 				selectLanguage: "Select language",
 				enableLightTheme: "Enable light theme",
 				enableDarkTheme: "Enable dark theme",
+				enableFluidEffect: "Enable cursor effect",
+				disableFluidEffect: "Disable cursor effect",
 			},
 			common: {
 				cancel: "Cancel",
@@ -207,6 +209,8 @@ export const resources = {
 				selectLanguage: "Вибрати мову",
 				enableLightTheme: "Увімкнути світлу тему",
 				enableDarkTheme: "Увімкнути темну тему",
+				enableFluidEffect: "Увімкнути ефект курсора",
+				disableFluidEffect: "Вимкнути ефект курсора",
 			},
 			common: {
 				cancel: "Скасувати",
@@ -399,6 +403,8 @@ export const resources = {
 				selectLanguage: "Выбрать язык",
 				enableLightTheme: "Включить светлую тему",
 				enableDarkTheme: "Включить темную тему",
+				enableFluidEffect: "Включить эффект курсора",
+				disableFluidEffect: "Отключить эффект курсора",
 			},
 			common: {
 				cancel: "Отмена",
