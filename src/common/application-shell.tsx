@@ -26,6 +26,7 @@ import { isThemeDark, setTheme, updateTheme } from "@/lib/theme";
 import { Button } from "@/ui/button";
 import {
 	Dialog,
+	DialogDescription,
 	DialogSideContent,
 	DialogTitle,
 	DialogTrigger,
@@ -46,7 +47,7 @@ export default function ApplicationShell({ children }: PropsWithChildren) {
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 	const [isFluidEffectEnabled, setIsFluidEffectEnabled] = useState(false);
 	const isTransitioning = useRouterState({
-		select: (state) => state.isTransitioning,
+		select: (state) => state.isLoading,
 	});
 	const muzaCopy = getMuzaCopy(language);
 
@@ -236,18 +237,18 @@ export default function ApplicationShell({ children }: PropsWithChildren) {
 						</span>
 					)}
 				</Button>
-				<Button
-					aria-label={fluidEffectLabel}
-					aria-pressed={isFluidEffectEnabled}
-					className={isMobile ? "h-10 justify-start" : undefined}
-					onClick={toggleFluidEffect}
-					size="sm"
-					title={fluidEffectLabel}
-					variant="outline"
-				>
-					<Sparkles className={isFluidEffectEnabled ? "text-pink-500" : ""} />
-					{isMobile && <span>{fluidEffectLabel}</span>}
-				</Button>
+				{!isMobile && (
+					<Button
+						aria-label={fluidEffectLabel}
+						aria-pressed={isFluidEffectEnabled}
+						onClick={toggleFluidEffect}
+						size="sm"
+						title={fluidEffectLabel}
+						variant="outline"
+					>
+						<Sparkles className={isFluidEffectEnabled ? "text-pink-500" : ""} />
+					</Button>
+				)}
 			</>
 		);
 	}
@@ -301,6 +302,9 @@ export default function ApplicationShell({ children }: PropsWithChildren) {
 								</DialogTrigger>
 								<DialogSideContent className="">
 									<DialogTitle className="pr-8">{t("nav.menu")}</DialogTitle>
+									<DialogDescription className="sr-only">
+										{t("nav.preferences")}
+									</DialogDescription>
 									<nav className="grid justify-items-end gap-3 text-sm">
 										{renderNavigationControls("mobile")}
 									</nav>
