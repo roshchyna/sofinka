@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import backgroundImage from "@/assets/background-home.jpg";
+import backgroundImage from "@/assets/background-home.avif";
 import { HomeMascot } from "@/components/home-mascot";
 import { useMuzaAssistantContext } from "@/components/muza-assistant/context";
 import { QuestionRenderer } from "@/components/questions/question-renderer";

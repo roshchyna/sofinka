@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { type Dispatch, type SetStateAction, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import backgroundConstructorImage from "@/assets/background-constructor.jpg";
+import backgroundConstructorImage from "@/assets/background-constructor.avif";
 import { ChoiceOptionsEditor } from "@/components/constructor/choice-options-editor";
 import { FieldLabel } from "@/components/constructor/field-label";
 import { GenerateQuestionsDialog } from "@/components/constructor/generate-questions-dialog";
