@@ -3,21 +3,26 @@ import { AnswerOptionButton } from "@/components/questions/answer-option-button"
 import { useSingleAnswer } from "@/components/questions/answer-state";
 import { QuestionCardShell } from "@/components/questions/question-card-shell";
 import { questionThemes } from "@/components/questions/question-theme";
-import type { SingleChoiceQuestion } from "@/components/questions/question-types";
-
-interface SingleChoiceQuestionCardProps {
-	question: SingleChoiceQuestion;
-}
+import type {
+	QuestionCardProps,
+	SingleChoiceQuestion,
+} from "@/components/questions/question-types";
 
 export function SingleChoiceQuestionCard({
 	question,
-}: SingleChoiceQuestionCardProps) {
+	onAnswer,
+	allowRetry,
+}: QuestionCardProps<SingleChoiceQuestion>) {
 	const { t } = useTranslation();
 	const theme = questionThemes[question.type];
-	const answer = useSingleAnswer(question.options);
+	const answer = useSingleAnswer(question.options, {
+		questionId: question.id,
+		onAnswer,
+	});
 
 	return (
 		<QuestionCardShell
+			allowRetry={allowRetry}
 			canSubmit={answer.canSubmit}
 			footerText={
 				answer.isSubmitted

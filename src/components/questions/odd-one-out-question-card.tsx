@@ -6,25 +6,28 @@ import { questionThemes } from "@/components/questions/question-theme";
 import {
 	getOptionIsCorrect,
 	type OddOneOutQuestion,
+	type QuestionCardProps,
 } from "@/components/questions/question-types";
-
-interface OddOneOutQuestionCardProps {
-	question: OddOneOutQuestion;
-}
 
 export function OddOneOutQuestionCard({
 	question,
-}: OddOneOutQuestionCardProps) {
+	onAnswer,
+	allowRetry,
+}: QuestionCardProps<OddOneOutQuestion>) {
 	const { t } = useTranslation();
 	const options = question.options.map((option) => ({
 		...option,
 		isCorrect: getOptionIsCorrect(option),
 	}));
 	const theme = questionThemes[question.type];
-	const answer = useSingleAnswer(options);
+	const answer = useSingleAnswer(options, {
+		questionId: question.id,
+		onAnswer,
+	});
 
 	return (
 		<QuestionCardShell
+			allowRetry={allowRetry}
 			canSubmit={answer.canSubmit}
 			footerText={
 				answer.isSubmitted

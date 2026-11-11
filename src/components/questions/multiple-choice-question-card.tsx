@@ -3,21 +3,26 @@ import { AnswerOptionButton } from "@/components/questions/answer-option-button"
 import { useMultipleAnswer } from "@/components/questions/answer-state";
 import { QuestionCardShell } from "@/components/questions/question-card-shell";
 import { questionThemes } from "@/components/questions/question-theme";
-import type { MultipleChoiceQuestion } from "@/components/questions/question-types";
-
-interface MultipleChoiceQuestionCardProps {
-	question: MultipleChoiceQuestion;
-}
+import type {
+	MultipleChoiceQuestion,
+	QuestionCardProps,
+} from "@/components/questions/question-types";
 
 export function MultipleChoiceQuestionCard({
 	question,
-}: MultipleChoiceQuestionCardProps) {
+	onAnswer,
+	allowRetry,
+}: QuestionCardProps<MultipleChoiceQuestion>) {
 	const { t } = useTranslation();
 	const theme = questionThemes[question.type];
-	const answer = useMultipleAnswer(question.options);
+	const answer = useMultipleAnswer(question.options, {
+		questionId: question.id,
+		onAnswer,
+	});
 
 	return (
 		<QuestionCardShell
+			allowRetry={allowRetry}
 			canSubmit={answer.canSubmit}
 			footerText={
 				answer.isSubmitted

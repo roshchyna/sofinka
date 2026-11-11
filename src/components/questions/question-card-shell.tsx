@@ -14,6 +14,7 @@ import {
 import { cn } from "@/utils/twMerge";
 
 interface QuestionCardShellProps {
+	allowRetry?: boolean;
 	canSubmit: boolean;
 	children: ReactNode;
 	footerText: string;
@@ -25,6 +26,7 @@ interface QuestionCardShellProps {
 }
 
 export function QuestionCardShell({
+	allowRetry = true,
 	canSubmit,
 	children,
 	footerText,
@@ -75,13 +77,15 @@ export function QuestionCardShell({
 					{footerText}
 				</output>
 				{isSubmitted ? (
-					<Button
-						aria-describedby={feedbackId}
-						onClick={onReset}
-						variant="surface"
-					>
-						{t("common.tryAgain")}
-					</Button>
+					allowRetry && (
+						<Button
+							aria-describedby={feedbackId}
+							onClick={onReset}
+							variant="surface"
+						>
+							{t("common.tryAgain")}
+						</Button>
+					)
 				) : (
 					<Button
 						aria-describedby={feedbackId}

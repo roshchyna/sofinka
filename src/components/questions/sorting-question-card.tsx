@@ -1,22 +1,24 @@
 import { CheckCircle2, XCircle } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useAnswerSubmission } from "@/components/questions/answer-state";
 import { QuestionCardShell } from "@/components/questions/question-card-shell";
 import { questionThemes } from "@/components/questions/question-theme";
-import type { SortingQuestion } from "@/components/questions/question-types";
-import { rewardCorrectAnswer } from "@/lib/reward-success";
+import type {
+	QuestionCardProps,
+	SortingQuestion,
+} from "@/components/questions/question-types";
 import { Button } from "@/ui/button";
 import { cn } from "@/utils/twMerge";
 
-interface SortingQuestionCardProps {
-	question: SortingQuestion;
-}
-
-export function SortingQuestionCard({ question }: SortingQuestionCardProps) {
+export function SortingQuestionCard({
+	question,
+	onAnswer,
+	allowRetry,
+}: QuestionCardProps<SortingQuestion>) {
 	const { t } = useTranslation();
 	const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 	const [placements, setPlacements] = useState<Record<string, string>>({});
-	const [isSubmitted, setIsSubmitted] = useState(false);
 
 	const theme = questionThemes[question.type];
 	const selectedItem = question.items.find(
@@ -27,6 +29,13 @@ export function SortingQuestionCard({ question }: SortingQuestionCardProps) {
 	const isCorrect = question.items.every(
 		(item) => placements[item.id] === item.categoryId,
 	);
+	const { isSubmitted, submitAnswer, resetSubmission } = useAnswerSubmission({
+		questionId: question.id,
+		onAnswer,
+		canSubmit: isComplete,
+		isCorrect,
+		value: placements,
+	});
 
 	function chooseItem(itemId: string) {
 		if (isSubmitted) return;
@@ -57,12 +66,7 @@ export function SortingQuestionCard({ question }: SortingQuestionCardProps) {
 	function resetQuestion() {
 		setSelectedItemId(null);
 		setPlacements({});
-		setIsSubmitted(false);
-	}
-
-	function submitAnswer() {
-		setIsSubmitted(true);
-		if (isCorrect) rewardCorrectAnswer();
+		resetSubmission();
 	}
 
 	function getItemsForCategory(categoryId: string) {
@@ -71,6 +75,7 @@ export function SortingQuestionCard({ question }: SortingQuestionCardProps) {
 
 	return (
 		<QuestionCardShell
+			allowRetry={allowRetry}
 			canSubmit={isComplete}
 			footerText={
 				isSubmitted

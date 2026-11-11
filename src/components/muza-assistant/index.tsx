@@ -25,11 +25,13 @@ const MuzaPage = lazy(() =>
 );
 
 interface MuzaAssistantProps {
+	age?: number;
 	endpoint?: string;
 	trigger?: ReactNode;
 }
 
 export default function MuzaAssistant({
+	age,
 	endpoint,
 	trigger,
 }: MuzaAssistantProps) {
@@ -73,7 +75,7 @@ export default function MuzaAssistant({
 				</DialogDescription>
 				{isOpen && (
 					<Suspense fallback={<MuzaLoading label={copy.waiting} />}>
-						<MuzaPage endpoint={endpoint} />
+						<MuzaPage age={age} endpoint={endpoint} />
 					</Suspense>
 				)}
 			</DialogSideContent>

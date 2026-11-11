@@ -4,7 +4,7 @@ import { MatchingQuestionCard } from "@/components/questions/matching-question-c
 import { MultipleChoiceQuestionCard } from "@/components/questions/multiple-choice-question-card";
 import { OddOneOutQuestionCard } from "@/components/questions/odd-one-out-question-card";
 import { OrderingQuestionCard } from "@/components/questions/ordering-question-card";
-import type { Question } from "@/components/questions/question-types";
+import type { QuestionCardProps } from "@/components/questions/question-types";
 import { SingleChoiceQuestionCard } from "@/components/questions/single-choice-question-card";
 import { SortingQuestionCard } from "@/components/questions/sorting-question-card";
 import { TextInputQuestionCard } from "@/components/questions/text-input-question-card";
@@ -17,36 +17,37 @@ import {
 	CardTitle,
 } from "@/ui/card";
 
-interface QuestionRendererProps {
-	question: Question;
-}
-
-export function QuestionRenderer({ question }: QuestionRendererProps) {
+export function QuestionRenderer({
+	question,
+	...interaction
+}: QuestionCardProps) {
 	switch (question.type) {
 		case "single-choice":
-			return <SingleChoiceQuestionCard question={question} />;
+			return <SingleChoiceQuestionCard question={question} {...interaction} />;
 		case "multiple-choice":
-			return <MultipleChoiceQuestionCard question={question} />;
+			return (
+				<MultipleChoiceQuestionCard question={question} {...interaction} />
+			);
 		case "true-false":
-			return <TrueFalseQuestionCard question={question} />;
+			return <TrueFalseQuestionCard question={question} {...interaction} />;
 		case "matching":
-			return <MatchingQuestionCard question={question} />;
+			return <MatchingQuestionCard question={question} {...interaction} />;
 		case "ordering":
-			return <OrderingQuestionCard question={question} />;
+			return <OrderingQuestionCard question={question} {...interaction} />;
 		case "sorting":
-			return <SortingQuestionCard question={question} />;
+			return <SortingQuestionCard question={question} {...interaction} />;
 		case "text-input":
-			return <TextInputQuestionCard question={question} />;
+			return <TextInputQuestionCard question={question} {...interaction} />;
 		case "image-choice":
-			return <ImageChoiceQuestionCard question={question} />;
+			return <ImageChoiceQuestionCard question={question} {...interaction} />;
 		case "odd-one-out":
-			return <OddOneOutQuestionCard question={question} />;
+			return <OddOneOutQuestionCard question={question} {...interaction} />;
 		default:
 			return <UnsupportedQuestionCard question={question} />;
 	}
 }
 
-function UnsupportedQuestionCard({ question }: QuestionRendererProps) {
+function UnsupportedQuestionCard({ question }: QuestionCardProps) {
 	const { t } = useTranslation();
 
 	return (

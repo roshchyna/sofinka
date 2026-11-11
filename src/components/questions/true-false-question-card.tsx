@@ -3,15 +3,16 @@ import { AnswerOptionButton } from "@/components/questions/answer-option-button"
 import { useSingleAnswer } from "@/components/questions/answer-state";
 import { QuestionCardShell } from "@/components/questions/question-card-shell";
 import { questionThemes } from "@/components/questions/question-theme";
-import type { TrueFalseQuestion } from "@/components/questions/question-types";
-
-interface TrueFalseQuestionCardProps {
-	question: TrueFalseQuestion;
-}
+import type {
+	QuestionCardProps,
+	TrueFalseQuestion,
+} from "@/components/questions/question-types";
 
 export function TrueFalseQuestionCard({
 	question,
-}: TrueFalseQuestionCardProps) {
+	onAnswer,
+	allowRetry,
+}: QuestionCardProps<TrueFalseQuestion>) {
 	const { t } = useTranslation();
 	const answerOptions = question.options?.length
 		? question.options.map((option) => ({
@@ -32,10 +33,14 @@ export function TrueFalseQuestionCard({
 				},
 			];
 	const theme = questionThemes[question.type];
-	const answer = useSingleAnswer(answerOptions);
+	const answer = useSingleAnswer(answerOptions, {
+		questionId: question.id,
+		onAnswer,
+	});
 
 	return (
 		<QuestionCardShell
+			allowRetry={allowRetry}
 			canSubmit={answer.canSubmit}
 			footerText={
 				answer.isSubmitted

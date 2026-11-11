@@ -110,6 +110,20 @@ export type Question =
 	| ImageChoiceQuestion
 	| OddOneOutQuestion;
 
+export type QuestionAnswerValue = string | string[] | Record<string, string>;
+
+export interface QuestionAnswerResult {
+	questionId: number;
+	isCorrect: boolean;
+	value: QuestionAnswerValue;
+}
+
+export interface QuestionCardProps<T extends Question = Question> {
+	question: T;
+	onAnswer?: (result: QuestionAnswerResult) => void;
+	allowRetry?: boolean;
+}
+
 export function getTrueFalseAnswer(question: TrueFalseQuestion) {
 	if (typeof question.answer === "boolean") return question.answer;
 

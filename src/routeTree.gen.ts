@@ -16,6 +16,7 @@ import { Route as ApiGenerateQuestionsRouteImport } from './routes/api/generate-
 import { Route as ApiMuzaAssistantRouteImport } from './routes/api/muza-assistant'
 import { Route as ConstructorIndexRouteImport } from './routes/constructor.index'
 import { Route as LanguageConstructorIndexRouteImport } from './routes/$language.constructor.index'
+import { Route as LanguageDemoIndexRouteImport } from './routes/$language.demo.index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -53,6 +54,11 @@ const LanguageConstructorIndexRoute =
     path: '/constructor/',
     getParentRoute: () => LanguageRoute,
   } as any)
+const LanguageDemoIndexRoute = LanguageDemoIndexRouteImport.update({
+  id: '/demo/',
+  path: '/demo/',
+  getParentRoute: () => LanguageRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -62,6 +68,7 @@ export interface FileRoutesByFullPath {
   '/$language/': typeof LanguageIndexRoute
   '/constructor/': typeof ConstructorIndexRoute
   '/$language/constructor/': typeof LanguageConstructorIndexRoute
+  '/$language/demo/': typeof LanguageDemoIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -70,6 +77,7 @@ export interface FileRoutesByTo {
   '/$language': typeof LanguageIndexRoute
   '/constructor': typeof ConstructorIndexRoute
   '/$language/constructor': typeof LanguageConstructorIndexRoute
+  '/$language/demo': typeof LanguageDemoIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -80,6 +88,7 @@ export interface FileRoutesById {
   '/$language/': typeof LanguageIndexRoute
   '/constructor/': typeof ConstructorIndexRoute
   '/$language/constructor/': typeof LanguageConstructorIndexRoute
+  '/$language/demo/': typeof LanguageDemoIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -91,6 +100,7 @@ export interface FileRouteTypes {
     | '/$language/'
     | '/constructor/'
     | '/$language/constructor/'
+    | '/$language/demo/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -99,6 +109,7 @@ export interface FileRouteTypes {
     | '/$language'
     | '/constructor'
     | '/$language/constructor'
+    | '/$language/demo'
   id:
     | '__root__'
     | '/'
@@ -108,6 +119,7 @@ export interface FileRouteTypes {
     | '/$language/'
     | '/constructor/'
     | '/$language/constructor/'
+    | '/$language/demo/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -169,17 +181,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LanguageConstructorIndexRouteImport
       parentRoute: typeof LanguageRoute
     }
+    '/$language/demo/': {
+      id: '/$language/demo/'
+      path: '/demo'
+      fullPath: '/$language/demo/'
+      preLoaderRoute: typeof LanguageDemoIndexRouteImport
+      parentRoute: typeof LanguageRoute
+    }
   }
 }
 
 interface LanguageRouteChildren {
   LanguageIndexRoute: typeof LanguageIndexRoute
   LanguageConstructorIndexRoute: typeof LanguageConstructorIndexRoute
+  LanguageDemoIndexRoute: typeof LanguageDemoIndexRoute
 }
 
 const LanguageRouteChildren: LanguageRouteChildren = {
   LanguageIndexRoute: LanguageIndexRoute,
   LanguageConstructorIndexRoute: LanguageConstructorIndexRoute,
+  LanguageDemoIndexRoute: LanguageDemoIndexRoute,
 }
 
 const LanguageRouteWithChildren = LanguageRoute._addFileChildren(

@@ -1,19 +1,16 @@
 import { CheckCircle2, XCircle } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useAnswerSubmission } from "@/components/questions/answer-state";
 import { QuestionCardShell } from "@/components/questions/question-card-shell";
 import { questionThemes } from "@/components/questions/question-theme";
 import {
 	getTextInputAnswers,
+	type QuestionCardProps,
 	type TextInputQuestion,
 } from "@/components/questions/question-types";
-import { rewardCorrectAnswer } from "@/lib/reward-success";
 import { Input } from "@/ui/input";
 import { cn } from "@/utils/twMerge";
-
-interface TextInputQuestionCardProps {
-	question: TextInputQuestion;
-}
 
 function normalizeAnswer(answer: string) {
 	return answer.trim().replace(/\s+/g, " ").toLowerCase();
@@ -21,10 +18,11 @@ function normalizeAnswer(answer: string) {
 
 export function TextInputQuestionCard({
 	question,
-}: TextInputQuestionCardProps) {
+	onAnswer,
+	allowRetry,
+}: QuestionCardProps<TextInputQuestion>) {
 	const { t } = useTranslation();
 	const [answer, setAnswer] = useState("");
-	const [isSubmitted, setIsSubmitted] = useState(false);
 
 	const theme = questionThemes[question.type];
 	const answers = getTextInputAnswers(question);
@@ -33,19 +31,22 @@ export function TextInputQuestionCard({
 	const isCorrect = answers.some(
 		(correctAnswer) => normalizeAnswer(correctAnswer) === normalizedAnswer,
 	);
+	const { isSubmitted, submitAnswer, resetSubmission } = useAnswerSubmission({
+		questionId: question.id,
+		onAnswer,
+		canSubmit: Boolean(normalizedAnswer),
+		isCorrect,
+		value: answer,
+	});
 
 	function resetQuestion() {
 		setAnswer("");
-		setIsSubmitted(false);
-	}
-
-	function submitAnswer() {
-		setIsSubmitted(true);
-		if (isCorrect) rewardCorrectAnswer();
+		resetSubmission();
 	}
 
 	return (
 		<QuestionCardShell
+			allowRetry={allowRetry}
 			canSubmit={Boolean(normalizedAnswer)}
 			footerText={
 				isSubmitted
