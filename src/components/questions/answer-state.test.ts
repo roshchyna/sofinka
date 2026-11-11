@@ -3,6 +3,7 @@
 import { act, renderHook } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
+	useAnswerSubmission,
 	useMultipleAnswer,
 	useSingleAnswer,
 } from "@/components/questions/answer-state";
@@ -19,6 +20,35 @@ const options = [
 	{ id: "wrong", isCorrect: false },
 	{ id: "correct", isCorrect: true },
 ];
+
+describe("answer submission reporting", () => {
+	beforeEach(() => rewardCorrectAnswerMock.mockClear());
+
+	it("reports and rewards a rapid duplicate submission only once and snapshots its value", () => {
+		const onAnswer = vi.fn();
+		const value = { first: "second" };
+		const { result } = renderHook(() =>
+			useAnswerSubmission({
+				canSubmit: true,
+				isCorrect: true,
+				questionId: 4,
+				value,
+				onAnswer,
+			}),
+		);
+		act(() => {
+			result.current.submitAnswer();
+			result.current.submitAnswer();
+		});
+		value.first = "changed";
+		expect(onAnswer).toHaveBeenCalledExactlyOnceWith({
+			questionId: 4,
+			isCorrect: true,
+			value: { first: "second" },
+		});
+		expect(rewardCorrectAnswerMock).toHaveBeenCalledTimes(1);
+	});
+});
 
 describe("useSingleAnswer", () => {
 	beforeEach(() => {

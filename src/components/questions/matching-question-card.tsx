@@ -1,22 +1,24 @@
 import { CheckCircle2, Link2, XCircle } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useAnswerSubmission } from "@/components/questions/answer-state";
 import { QuestionCardShell } from "@/components/questions/question-card-shell";
 import { questionThemes } from "@/components/questions/question-theme";
-import type { MatchingQuestion } from "@/components/questions/question-types";
-import { rewardCorrectAnswer } from "@/lib/reward-success";
+import type {
+	MatchingQuestion,
+	QuestionCardProps,
+} from "@/components/questions/question-types";
 import { Button } from "@/ui/button";
 import { cn } from "@/utils/twMerge";
 
-interface MatchingQuestionCardProps {
-	question: MatchingQuestion;
-}
-
-export function MatchingQuestionCard({ question }: MatchingQuestionCardProps) {
+export function MatchingQuestionCard({
+	question,
+	onAnswer,
+	allowRetry,
+}: QuestionCardProps<MatchingQuestion>) {
 	const { t } = useTranslation();
 	const [selectedLeftId, setSelectedLeftId] = useState<string | null>(null);
 	const [matches, setMatches] = useState<Record<string, string>>({});
-	const [isSubmitted, setIsSubmitted] = useState(false);
 
 	const theme = questionThemes[question.type];
 	const rightOptions = question.pairs.slice().reverse();
@@ -24,6 +26,13 @@ export function MatchingQuestionCard({ question }: MatchingQuestionCardProps) {
 	const isCorrect = question.pairs.every(
 		(pair) => matches[pair.id] === pair.id,
 	);
+	const { isSubmitted, submitAnswer, resetSubmission } = useAnswerSubmission({
+		questionId: question.id,
+		onAnswer,
+		canSubmit: isComplete,
+		isCorrect,
+		value: matches,
+	});
 
 	function chooseLeft(pairId: string) {
 		if (isSubmitted) return;
@@ -49,12 +58,7 @@ export function MatchingQuestionCard({ question }: MatchingQuestionCardProps) {
 	function resetQuestion() {
 		setSelectedLeftId(null);
 		setMatches({});
-		setIsSubmitted(false);
-	}
-
-	function submitAnswer() {
-		setIsSubmitted(true);
-		if (isCorrect) rewardCorrectAnswer();
+		resetSubmission();
 	}
 
 	function getRightLabel(pairId: string) {
@@ -63,6 +67,7 @@ export function MatchingQuestionCard({ question }: MatchingQuestionCardProps) {
 
 	return (
 		<QuestionCardShell
+			allowRetry={allowRetry}
 			canSubmit={isComplete}
 			footerText={
 				isSubmitted

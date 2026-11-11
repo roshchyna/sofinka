@@ -35,12 +35,21 @@ import { Select } from "@/ui/select";
 
 const FLUID_EFFECT_STORAGE_KEY = "fluid-effect-enabled";
 
+const navigationItems = [
+	{ to: "/$language", label: "nav.quiz" },
+	{ to: "/$language/constructor", label: "nav.constructor" },
+	{ to: "/$language/demo", label: "nav.demo" },
+] as const;
+
 export default function ApplicationShell({ children }: PropsWithChildren) {
 	const navigate = useNavigate();
 	const pathname = useRouterState({
 		select: (state) => state.location.pathname,
 	});
 	const language = getLanguageFromPathname(pathname);
+	const localizedPagePath = getLocalizedPagePath(pathname);
+	const isDemoPage = localizedPagePath === "/$language/demo";
+	const childAgeOverride = isDemoPage ? 8 : undefined;
 	const { i18n, t } = useTranslation();
 	const [childAge, setChildAge] = useState(7);
 	const [isDark, setIsDark] = useState(true);
@@ -112,10 +121,6 @@ export default function ApplicationShell({ children }: PropsWithChildren) {
 	}
 
 	function changeLanguage(nextLanguage: Language) {
-		const to = isConstructorPath(pathname)
-			? "/$language/constructor"
-			: "/$language";
-
 		saveLanguage(nextLanguage);
 		document.documentElement.lang = nextLanguage;
 		void i18n.changeLanguage(nextLanguage);
@@ -124,7 +129,7 @@ export default function ApplicationShell({ children }: PropsWithChildren) {
 				language: nextLanguage,
 			},
 			replace: true,
-			to,
+			to: localizedPagePath,
 		});
 	}
 
@@ -146,38 +151,23 @@ export default function ApplicationShell({ children }: PropsWithChildren) {
 
 		return (
 			<>
-				<Button
-					asChild
-					className={linkClassName}
-					size="sm"
-					variant={isMobile ? "outline" : "default"}
-				>
-					<Link
-						onClick={isMobile ? closeMobileMenu : undefined}
-						params={{
-							language,
-						}}
-						to="/$language"
+				{navigationItems.map((item) => (
+					<Button
+						asChild
+						className={linkClassName}
+						key={item.to}
+						size="sm"
+						variant={isMobile ? "outline" : "default"}
 					>
-						{t("nav.quiz")}
-					</Link>
-				</Button>
-				<Button
-					asChild
-					className={linkClassName}
-					size="sm"
-					variant={isMobile ? "outline" : "default"}
-				>
-					<Link
-						onClick={isMobile ? closeMobileMenu : undefined}
-						params={{
-							language,
-						}}
-						to="/$language/constructor"
-					>
-						{t("nav.constructor")}
-					</Link>
-				</Button>
+						<Link
+							onClick={isMobile ? closeMobileMenu : undefined}
+							params={{ language }}
+							to={item.to}
+						>
+							{t(item.label)}
+						</Link>
+					</Button>
+				))}
 				{isMobile && (
 					<div className="mt-4 w-full border-zinc-200 border-t pt-6 dark:border-zinc-800/70">
 						<div className="font-semibold text-lg text-zinc-950 dark:text-zinc-50">
@@ -193,13 +183,14 @@ export default function ApplicationShell({ children }: PropsWithChildren) {
 						className={
 							isMobile ? "h-9 w-32 px-2 text-xs" : "h-8 w-24 px-2 text-xs"
 						}
+						disabled={isDemoPage}
 						id={childAgeId}
 						onValueChange={(value) => changeChildAge(Number(value))}
 						options={childAgeOptions.map((age) => ({
 							label: t("nav.ageOption", { age }),
 							value: String(age),
 						}))}
-						value={String(childAge)}
+						value={String(childAgeOverride ?? childAge)}
 					/>
 				</label>
 				<label className={fieldClassName} htmlFor={languageId}>
@@ -275,6 +266,7 @@ export default function ApplicationShell({ children }: PropsWithChildren) {
 
 						<div className="flex items-center gap-2 md:hidden">
 							<MuzaAssistant
+								age={childAgeOverride}
 								trigger={
 									<Button
 										aria-label={muzaCopy.title}
@@ -322,7 +314,7 @@ export default function ApplicationShell({ children }: PropsWithChildren) {
 					{children}
 				</main>
 				<div className="hidden md:block">
-					<MuzaAssistant />
+					<MuzaAssistant age={childAgeOverride} />
 				</div>
 			</div>
 		</MuzaAssistantProvider>
@@ -335,6 +327,13 @@ function getLanguageFromPathname(pathname: string): Language {
 	return toLanguage(language);
 }
 
-function isConstructorPath(pathname: string) {
-	return pathname.split("/").filter(Boolean).includes("constructor");
+function getLocalizedPagePath(pathname: string) {
+	switch (pathname.split("/").filter(Boolean)[1]) {
+		case "constructor":
+			return "/$language/constructor";
+		case "demo":
+			return "/$language/demo";
+		default:
+			return "/$language";
+	}
 }

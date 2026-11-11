@@ -39,11 +39,17 @@ type MuzaSyncMessage =
 			type: "state";
 	  };
 
-export function MuzaPage({ endpoint }: { endpoint?: string }) {
+interface MuzaPageProps {
+	age?: number;
+	endpoint?: string;
+}
+
+export function MuzaPage({ age: ageOverride, endpoint }: MuzaPageProps) {
 	const { i18n } = useTranslation();
 	const language = toLanguage(i18n.resolvedLanguage ?? i18n.language);
 	const copy = getMuzaCopy(language);
-	const [age, setAge] = useState(() => getChildAge());
+	const [storedAge, setStoredAge] = useState(() => getChildAge());
+	const age = ageOverride ?? storedAge;
 	const [prompt, setPrompt] = useState("");
 	const [messages, setMessages] = useState<MuzaMessage[]>([]);
 	const [isStreamLoading, setIsStreamLoading] = useState(false);
@@ -95,7 +101,7 @@ export function MuzaPage({ endpoint }: { endpoint?: string }) {
 
 	useEffect(() => {
 		const syncPreferences = () => {
-			setAge(getChildAge());
+			setStoredAge(getChildAge());
 		};
 
 		window.addEventListener(CHILD_AGE_CHANGED_EVENT, syncPreferences);

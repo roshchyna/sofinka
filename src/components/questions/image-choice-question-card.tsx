@@ -3,24 +3,29 @@ import { useTranslation } from "react-i18next";
 import { useSingleAnswer } from "@/components/questions/answer-state";
 import { QuestionCardShell } from "@/components/questions/question-card-shell";
 import { questionThemes } from "@/components/questions/question-theme";
-import type { ImageChoiceQuestion } from "@/components/questions/question-types";
+import type {
+	ImageChoiceQuestion,
+	QuestionCardProps,
+} from "@/components/questions/question-types";
 import { normalizeImageSource } from "@/lib/image-source";
 import { Button } from "@/ui/button";
 import { cn } from "@/utils/twMerge";
 
-interface ImageChoiceQuestionCardProps {
-	question: ImageChoiceQuestion;
-}
-
 export function ImageChoiceQuestionCard({
 	question,
-}: ImageChoiceQuestionCardProps) {
+	onAnswer,
+	allowRetry,
+}: QuestionCardProps<ImageChoiceQuestion>) {
 	const { t } = useTranslation();
 	const theme = questionThemes[question.type];
-	const answer = useSingleAnswer(question.options);
+	const answer = useSingleAnswer(question.options, {
+		questionId: question.id,
+		onAnswer,
+	});
 
 	return (
 		<QuestionCardShell
+			allowRetry={allowRetry}
 			canSubmit={answer.canSubmit}
 			footerText={
 				answer.isSubmitted

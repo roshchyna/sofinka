@@ -1,4 +1,8 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
+import type {
+	QuestionAnswerResult,
+	QuestionAnswerValue,
+} from "@/components/questions/question-types";
 import { rewardCorrectAnswer } from "@/lib/reward-success";
 
 interface AnswerOptionState {
@@ -6,12 +10,70 @@ interface AnswerOptionState {
 	isCorrect: boolean;
 }
 
-export function useSingleAnswer(options: AnswerOptionState[]) {
-	const [selectedId, setSelectedId] = useState<string | null>(null);
+interface AnswerReporter {
+	questionId: number;
+	onAnswer?: (result: QuestionAnswerResult) => void;
+}
+
+interface AnswerSubmissionOptions {
+	canSubmit: boolean;
+	isCorrect: boolean;
+	value: QuestionAnswerValue;
+	questionId?: number;
+	onAnswer?: (result: QuestionAnswerResult) => void;
+}
+
+export function useAnswerSubmission({
+	canSubmit,
+	isCorrect,
+	value,
+	questionId,
+	onAnswer,
+}: AnswerSubmissionOptions) {
 	const [isSubmitted, setIsSubmitted] = useState(false);
+	const submittedRef = useRef(false);
+
+	function submitAnswer() {
+		if (!canSubmit || submittedRef.current) return;
+		submittedRef.current = true;
+		setIsSubmitted(true);
+		if (isCorrect) rewardCorrectAnswer();
+		if (questionId !== undefined) {
+			onAnswer?.({
+				questionId,
+				isCorrect,
+				value:
+					typeof value === "string"
+						? value
+						: Array.isArray(value)
+							? [...value]
+							: { ...value },
+			});
+		}
+	}
+
+	function resetSubmission() {
+		submittedRef.current = false;
+		setIsSubmitted(false);
+	}
+
+	return { isSubmitted, submitAnswer, resetSubmission };
+}
+
+export function useSingleAnswer(
+	options: AnswerOptionState[],
+	reporter?: AnswerReporter,
+) {
+	const [selectedId, setSelectedId] = useState<string | null>(null);
 
 	const selectedOption = options.find((option) => option.id === selectedId);
 	const isCorrect = selectedOption?.isCorrect ?? false;
+	const { isSubmitted, submitAnswer, resetSubmission } = useAnswerSubmission({
+		...reporter,
+		canSubmit: selectedId !== null,
+		isCorrect,
+		value: selectedId ?? "",
+	});
 
 	function chooseOption(optionId: string) {
 		if (isSubmitted) return;
@@ -20,12 +82,7 @@ export function useSingleAnswer(options: AnswerOptionState[]) {
 
 	function resetAnswer() {
 		setSelectedId(null);
-		setIsSubmitted(false);
-	}
-
-	function submitAnswer() {
-		setIsSubmitted(true);
-		if (isCorrect) rewardCorrectAnswer();
+		resetSubmission();
 	}
 
 	return {
@@ -40,9 +97,11 @@ export function useSingleAnswer(options: AnswerOptionState[]) {
 	};
 }
 
-export function useMultipleAnswer(options: AnswerOptionState[]) {
+export function useMultipleAnswer(
+	options: AnswerOptionState[],
+	reporter?: AnswerReporter,
+) {
 	const [selectedIds, setSelectedIds] = useState<string[]>([]);
-	const [isSubmitted, setIsSubmitted] = useState(false);
 
 	const correctIds = options
 		.filter((option) => option.isCorrect)
@@ -50,6 +109,12 @@ export function useMultipleAnswer(options: AnswerOptionState[]) {
 	const isCorrect =
 		selectedIds.length === correctIds.length &&
 		correctIds.every((id) => selectedIds.includes(id));
+	const { isSubmitted, submitAnswer, resetSubmission } = useAnswerSubmission({
+		...reporter,
+		canSubmit: selectedIds.length > 0,
+		isCorrect,
+		value: selectedIds,
+	});
 
 	function toggleOption(optionId: string) {
 		if (isSubmitted) return;
@@ -63,12 +128,7 @@ export function useMultipleAnswer(options: AnswerOptionState[]) {
 
 	function resetAnswer() {
 		setSelectedIds([]);
-		setIsSubmitted(false);
-	}
-
-	function submitAnswer() {
-		setIsSubmitted(true);
-		if (isCorrect) rewardCorrectAnswer();
+		resetSubmission();
 	}
 
 	return {

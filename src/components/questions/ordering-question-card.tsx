@@ -1,30 +1,39 @@
 import { ArrowDown, ArrowUp, CheckCircle2, XCircle } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useAnswerSubmission } from "@/components/questions/answer-state";
 import { QuestionCardShell } from "@/components/questions/question-card-shell";
 import { questionThemes } from "@/components/questions/question-theme";
-import type { OrderingQuestion } from "@/components/questions/question-types";
-import { rewardCorrectAnswer } from "@/lib/reward-success";
+import type {
+	OrderingQuestion,
+	QuestionCardProps,
+} from "@/components/questions/question-types";
 import { Button } from "@/ui/button";
 import { cn } from "@/utils/twMerge";
 
-interface OrderingQuestionCardProps {
-	question: OrderingQuestion;
-}
-
-export function OrderingQuestionCard({ question }: OrderingQuestionCardProps) {
+export function OrderingQuestionCard({
+	question,
+	onAnswer,
+	allowRetry,
+}: QuestionCardProps<OrderingQuestion>) {
 	const { t } = useTranslation();
 	const initialItems = useMemo(
 		() => question.items.slice().reverse(),
 		[question],
 	);
 	const [items, setItems] = useState(initialItems);
-	const [isSubmitted, setIsSubmitted] = useState(false);
 
 	const theme = questionThemes[question.type];
 	const isCorrect = items.every(
 		(item, index) => item.id === question.items[index]?.id,
 	);
+	const { isSubmitted, submitAnswer, resetSubmission } = useAnswerSubmission({
+		questionId: question.id,
+		onAnswer,
+		canSubmit: true,
+		isCorrect,
+		value: items.map((item) => item.id),
+	});
 
 	function moveItem(fromIndex: number, direction: -1 | 1) {
 		if (isSubmitted) return;
@@ -49,16 +58,12 @@ export function OrderingQuestionCard({ question }: OrderingQuestionCardProps) {
 
 	function resetQuestion() {
 		setItems(initialItems);
-		setIsSubmitted(false);
-	}
-
-	function submitAnswer() {
-		setIsSubmitted(true);
-		if (isCorrect) rewardCorrectAnswer();
+		resetSubmission();
 	}
 
 	return (
 		<QuestionCardShell
+			allowRetry={allowRetry}
 			canSubmit={true}
 			footerText={
 				isSubmitted

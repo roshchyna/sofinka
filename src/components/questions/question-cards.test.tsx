@@ -4,6 +4,7 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { MultipleChoiceQuestionCard } from "@/components/questions/multiple-choice-question-card";
 import { OddOneOutQuestionCard } from "@/components/questions/odd-one-out-question-card";
+import { QuestionRenderer } from "@/components/questions/question-renderer";
 import { TextInputQuestionCard } from "@/components/questions/text-input-question-card";
 import { TrueFalseQuestionCard } from "@/components/questions/true-false-question-card";
 import i18n from "@/i18n";
@@ -25,6 +26,47 @@ describe("question card smoke tests", () => {
 	afterEach(() => {
 		cleanup();
 		rewardCorrectAnswerMock.mockClear();
+	});
+
+	it("reports an image-choice result through the shared renderer", () => {
+		const onAnswer = vi.fn();
+		render(
+			<QuestionRenderer
+				allowRetry={false}
+				onAnswer={onAnswer}
+				question={{
+					id: 77,
+					type: "image-choice",
+					title: "Choose the circle",
+					options: [
+						{
+							id: "circle",
+							label: "Circle",
+							imageSrc: "/quiz/circle.svg",
+							imageAlt: "Blue circle",
+							isCorrect: true,
+						},
+						{
+							id: "square",
+							label: "Square",
+							imageSrc: "/quiz/square.svg",
+							imageAlt: "Green square",
+							isCorrect: false,
+						},
+					],
+				}}
+			/>,
+		);
+		fireEvent.click(screen.getByRole("radio", { name: /Circle/ }));
+		fireEvent.click(screen.getByRole("button", { name: "Проверить" }));
+		expect(onAnswer).toHaveBeenCalledExactlyOnceWith({
+			questionId: 77,
+			isCorrect: true,
+			value: "circle",
+		});
+		expect(
+			screen.queryByRole("button", { name: "Попробовать ещё раз" }),
+		).toBeNull();
 	});
 
 	it("accepts odd-one-out answer by isCorrect", () => {
