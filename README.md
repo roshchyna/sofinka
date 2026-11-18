@@ -4,6 +4,8 @@
 
 Sofinka is a multilingual quiz app for kids. It includes a play mode, a question constructor, local per-language question storage, and an optional AI generator for creating new quiz questions.
 
+The learning area at `/en/learn/math-to-100` introduces a six-lesson course outline. Its first published lesson, Tens and Ones, includes a worked example, six exercises, hints, and a separate review question bank. The remaining five lessons are marked as coming soon. Confirmed answers and the current step are saved in this browser for one learner; progress is shared across interface languages and does not sync between devices.
+
 The app supports English, Ukrainian, and Russian. Switching the language also switches the active saved question set.
 
 ## Links

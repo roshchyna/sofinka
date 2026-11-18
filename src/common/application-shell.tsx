@@ -14,6 +14,8 @@ import { FluidCursor } from "@/components/fluid-cursor";
 import MuzaAssistant from "@/components/muza-assistant";
 import { MuzaAssistantProvider } from "@/components/muza-assistant/context";
 import { getMuzaCopy } from "@/components/muza-assistant/copy";
+import { learningCopy } from "@/data/courses/learning-copy";
+import { MATH_COURSE_ID } from "@/data/courses/math-to-100";
 import { type Language, languageOptions, toLanguage } from "@/i18n/languages";
 import {
 	CHILD_AGE_CHANGED_EVENT,
@@ -22,6 +24,7 @@ import {
 	saveChildAge,
 } from "@/lib/child-age-storage";
 import { saveLanguage } from "@/lib/language-storage";
+import { getLocalizedPath } from "@/lib/localized-path";
 import { isThemeDark, setTheme, updateTheme } from "@/lib/theme";
 import { Button } from "@/ui/button";
 import {
@@ -36,6 +39,7 @@ import { Select } from "@/ui/select";
 const FLUID_EFFECT_STORAGE_KEY = "fluid-effect-enabled";
 
 const navigationItems = [
+	{ to: "/$language/learn", label: "nav.learn" },
 	{ to: "/$language", label: "nav.quiz" },
 	{ to: "/$language/constructor", label: "nav.constructor" },
 	{ to: "/$language/demo", label: "nav.demo" },
@@ -47,9 +51,11 @@ export default function ApplicationShell({ children }: PropsWithChildren) {
 		select: (state) => state.location.pathname,
 	});
 	const language = getLanguageFromPathname(pathname);
-	const localizedPagePath = getLocalizedPagePath(pathname);
-	const isDemoPage = localizedPagePath === "/$language/demo";
-	const childAgeOverride = isDemoPage ? 8 : undefined;
+	const pathSegments = pathname.split("/").filter(Boolean);
+	const isDemoPage = pathSegments[1] === "demo";
+	const isLearningPage = pathSegments[1] === "learn";
+	const isLearningLesson = isLearningPage && pathSegments.length === 4;
+	const childAgeOverride = isDemoPage || isLearningPage ? 8 : undefined;
 	const { i18n, t } = useTranslation();
 	const [childAge, setChildAge] = useState(7);
 	const [isDark, setIsDark] = useState(true);
@@ -125,11 +131,10 @@ export default function ApplicationShell({ children }: PropsWithChildren) {
 		document.documentElement.lang = nextLanguage;
 		void i18n.changeLanguage(nextLanguage);
 		void navigate({
-			params: {
-				language: nextLanguage,
-			},
+			to: getLocalizedPath(pathname, nextLanguage),
+			search: true,
+			hash: true,
 			replace: true,
-			to: localizedPagePath,
 		});
 	}
 
@@ -183,7 +188,7 @@ export default function ApplicationShell({ children }: PropsWithChildren) {
 						className={
 							isMobile ? "h-9 w-32 px-2 text-xs" : "h-8 w-24 px-2 text-xs"
 						}
-						disabled={isDemoPage}
+						disabled={isDemoPage || isLearningPage}
 						id={childAgeId}
 						onValueChange={(value) => changeChildAge(Number(value))}
 						options={childAgeOptions.map((age) => ({
@@ -246,7 +251,7 @@ export default function ApplicationShell({ children }: PropsWithChildren) {
 
 	return (
 		<MuzaAssistantProvider>
-			<FluidCursor enabled={isFluidEffectEnabled} />
+			<FluidCursor enabled={isFluidEffectEnabled && !isLearningLesson} />
 			<div className="flex min-h-screen flex-col bg-white text-zinc-950 dark:bg-zinc-950 dark:text-zinc-300">
 				<header className="shrink-0 border-zinc-200 border-b bg-pink-50 dark:border-zinc-800 dark:bg-zinc-900">
 					<div className="mx-auto flex min-h-14 max-w-6xl flex-wrap items-center justify-between gap-3 px-6 py-2">
@@ -260,49 +265,72 @@ export default function ApplicationShell({ children }: PropsWithChildren) {
 							Sofinka
 						</Link>
 
-						<nav className="hidden flex-wrap items-center justify-end gap-2 text-sm md:flex">
-							{renderNavigationControls("desktop")}
-						</nav>
+						{isLearningLesson ? (
+							<div className="flex items-center gap-3">
+								<Link
+									to="/$language/learn/$courseId"
+									params={{ language, courseId: MATH_COURSE_ID }}
+									className="text-sm underline-offset-4 hover:underline"
+								>
+									{learningCopy[language].title}
+								</Link>
+								<Select
+									aria-label={t("nav.selectLanguage")}
+									className="h-10 w-28 text-xs"
+									onValueChange={(value) => changeLanguage(toLanguage(value))}
+									options={languageOptions}
+									value={language}
+								/>
+							</div>
+						) : (
+							<>
+								<nav className="hidden flex-wrap items-center justify-end gap-2 text-sm md:flex">
+									{renderNavigationControls("desktop")}
+								</nav>
 
-						<div className="flex items-center gap-2 md:hidden">
-							<MuzaAssistant
-								age={childAgeOverride}
-								trigger={
-									<Button
-										aria-label={muzaCopy.title}
-										size="sm"
-										title={muzaCopy.title}
-										variant="outline"
-									>
-										<MessageCircle />
-									</Button>
-								}
-							/>
+								<div className="flex items-center gap-2 md:hidden">
+									<MuzaAssistant
+										age={childAgeOverride}
+										trigger={
+											<Button
+												aria-label={muzaCopy.title}
+												size="sm"
+												title={muzaCopy.title}
+												variant="outline"
+											>
+												<MessageCircle />
+											</Button>
+										}
+									/>
 
-							<Dialog
-								open={isMobileMenuOpen}
-								onOpenChange={setIsMobileMenuOpen}
-							>
-								<DialogTrigger asChild>
-									<Button
-										aria-label={t("nav.openMenu")}
-										size="sm"
-										variant="outline"
+									<Dialog
+										open={isMobileMenuOpen}
+										onOpenChange={setIsMobileMenuOpen}
 									>
-										<Menu />
-									</Button>
-								</DialogTrigger>
-								<DialogSideContent className="">
-									<DialogTitle className="pr-8">{t("nav.menu")}</DialogTitle>
-									<DialogDescription className="sr-only">
-										{t("nav.preferences")}
-									</DialogDescription>
-									<nav className="grid justify-items-end gap-3 text-sm">
-										{renderNavigationControls("mobile")}
-									</nav>
-								</DialogSideContent>
-							</Dialog>
-						</div>
+										<DialogTrigger asChild>
+											<Button
+												aria-label={t("nav.openMenu")}
+												size="sm"
+												variant="outline"
+											>
+												<Menu />
+											</Button>
+										</DialogTrigger>
+										<DialogSideContent className="">
+											<DialogTitle className="pr-8">
+												{t("nav.menu")}
+											</DialogTitle>
+											<DialogDescription className="sr-only">
+												{t("nav.preferences")}
+											</DialogDescription>
+											<nav className="grid justify-items-end gap-3 text-sm">
+												{renderNavigationControls("mobile")}
+											</nav>
+										</DialogSideContent>
+									</Dialog>
+								</div>
+							</>
+						)}
 					</div>
 
 					{isTransitioning && (
@@ -313,9 +341,11 @@ export default function ApplicationShell({ children }: PropsWithChildren) {
 				<main className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-6 py-8">
 					{children}
 				</main>
-				<div className="hidden md:block">
-					<MuzaAssistant age={childAgeOverride} />
-				</div>
+				{!isLearningLesson && (
+					<div className="hidden md:block">
+						<MuzaAssistant age={childAgeOverride} />
+					</div>
+				)}
 			</div>
 		</MuzaAssistantProvider>
 	);
@@ -325,15 +355,4 @@ function getLanguageFromPathname(pathname: string): Language {
 	const [language] = pathname.split("/").filter(Boolean);
 
 	return toLanguage(language);
-}
-
-function getLocalizedPagePath(pathname: string) {
-	switch (pathname.split("/").filter(Boolean)[1]) {
-		case "constructor":
-			return "/$language/constructor";
-		case "demo":
-			return "/$language/demo";
-		default:
-			return "/$language";
-	}
 }
