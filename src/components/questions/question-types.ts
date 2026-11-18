@@ -68,6 +68,7 @@ export interface SortingQuestion extends QuestionBase {
 
 export interface TextInputQuestion extends QuestionBase {
 	type: "text-input";
+	inputMode?: "text" | "numeric" | "decimal";
 	answer?: string;
 	answers?: string[];
 	options?: ChoiceOption[];

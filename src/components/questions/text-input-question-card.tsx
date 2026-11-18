@@ -65,6 +65,7 @@ export function TextInputQuestionCard({
 				<div className="relative">
 					<Input
 						aria-label={question.title}
+						inputMode={question.inputMode}
 						className={cn(
 							"pr-10",
 							isSubmitted &&
