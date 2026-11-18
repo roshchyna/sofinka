@@ -17,6 +17,9 @@ import { Route as ApiMuzaAssistantRouteImport } from './routes/api/muza-assistan
 import { Route as ConstructorIndexRouteImport } from './routes/constructor.index'
 import { Route as LanguageConstructorIndexRouteImport } from './routes/$language.constructor.index'
 import { Route as LanguageDemoIndexRouteImport } from './routes/$language.demo.index'
+import { Route as LanguageLearnIndexRouteImport } from './routes/$language.learn.index'
+import { Route as LanguageLearnCourseIdIndexRouteImport } from './routes/$language.learn.$courseId.index'
+import { Route as LanguageLearnCourseIdLessonIdRouteImport } from './routes/$language.learn.$courseId.$lessonId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -59,6 +62,23 @@ const LanguageDemoIndexRoute = LanguageDemoIndexRouteImport.update({
   path: '/demo/',
   getParentRoute: () => LanguageRoute,
 } as any)
+const LanguageLearnIndexRoute = LanguageLearnIndexRouteImport.update({
+  id: '/learn/',
+  path: '/learn/',
+  getParentRoute: () => LanguageRoute,
+} as any)
+const LanguageLearnCourseIdIndexRoute =
+  LanguageLearnCourseIdIndexRouteImport.update({
+    id: '/learn/$courseId/',
+    path: '/learn/$courseId/',
+    getParentRoute: () => LanguageRoute,
+  } as any)
+const LanguageLearnCourseIdLessonIdRoute =
+  LanguageLearnCourseIdLessonIdRouteImport.update({
+    id: '/learn/$courseId/$lessonId',
+    path: '/learn/$courseId/$lessonId',
+    getParentRoute: () => LanguageRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -69,6 +89,9 @@ export interface FileRoutesByFullPath {
   '/constructor/': typeof ConstructorIndexRoute
   '/$language/constructor/': typeof LanguageConstructorIndexRoute
   '/$language/demo/': typeof LanguageDemoIndexRoute
+  '/$language/learn/': typeof LanguageLearnIndexRoute
+  '/$language/learn/$courseId/$lessonId': typeof LanguageLearnCourseIdLessonIdRoute
+  '/$language/learn/$courseId/': typeof LanguageLearnCourseIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -78,6 +101,9 @@ export interface FileRoutesByTo {
   '/constructor': typeof ConstructorIndexRoute
   '/$language/constructor': typeof LanguageConstructorIndexRoute
   '/$language/demo': typeof LanguageDemoIndexRoute
+  '/$language/learn': typeof LanguageLearnIndexRoute
+  '/$language/learn/$courseId/$lessonId': typeof LanguageLearnCourseIdLessonIdRoute
+  '/$language/learn/$courseId': typeof LanguageLearnCourseIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -89,6 +115,9 @@ export interface FileRoutesById {
   '/constructor/': typeof ConstructorIndexRoute
   '/$language/constructor/': typeof LanguageConstructorIndexRoute
   '/$language/demo/': typeof LanguageDemoIndexRoute
+  '/$language/learn/': typeof LanguageLearnIndexRoute
+  '/$language/learn/$courseId/$lessonId': typeof LanguageLearnCourseIdLessonIdRoute
+  '/$language/learn/$courseId/': typeof LanguageLearnCourseIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -101,6 +130,9 @@ export interface FileRouteTypes {
     | '/constructor/'
     | '/$language/constructor/'
     | '/$language/demo/'
+    | '/$language/learn/'
+    | '/$language/learn/$courseId/$lessonId'
+    | '/$language/learn/$courseId/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -110,6 +142,9 @@ export interface FileRouteTypes {
     | '/constructor'
     | '/$language/constructor'
     | '/$language/demo'
+    | '/$language/learn'
+    | '/$language/learn/$courseId/$lessonId'
+    | '/$language/learn/$courseId'
   id:
     | '__root__'
     | '/'
@@ -120,6 +155,9 @@ export interface FileRouteTypes {
     | '/constructor/'
     | '/$language/constructor/'
     | '/$language/demo/'
+    | '/$language/learn/'
+    | '/$language/learn/$courseId/$lessonId'
+    | '/$language/learn/$courseId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -188,6 +226,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LanguageDemoIndexRouteImport
       parentRoute: typeof LanguageRoute
     }
+    '/$language/learn/': {
+      id: '/$language/learn/'
+      path: '/learn'
+      fullPath: '/$language/learn/'
+      preLoaderRoute: typeof LanguageLearnIndexRouteImport
+      parentRoute: typeof LanguageRoute
+    }
+    '/$language/learn/$courseId/': {
+      id: '/$language/learn/$courseId/'
+      path: '/learn/$courseId'
+      fullPath: '/$language/learn/$courseId/'
+      preLoaderRoute: typeof LanguageLearnCourseIdIndexRouteImport
+      parentRoute: typeof LanguageRoute
+    }
+    '/$language/learn/$courseId/$lessonId': {
+      id: '/$language/learn/$courseId/$lessonId'
+      path: '/learn/$courseId/$lessonId'
+      fullPath: '/$language/learn/$courseId/$lessonId'
+      preLoaderRoute: typeof LanguageLearnCourseIdLessonIdRouteImport
+      parentRoute: typeof LanguageRoute
+    }
   }
 }
 
@@ -195,12 +254,18 @@ interface LanguageRouteChildren {
   LanguageIndexRoute: typeof LanguageIndexRoute
   LanguageConstructorIndexRoute: typeof LanguageConstructorIndexRoute
   LanguageDemoIndexRoute: typeof LanguageDemoIndexRoute
+  LanguageLearnIndexRoute: typeof LanguageLearnIndexRoute
+  LanguageLearnCourseIdLessonIdRoute: typeof LanguageLearnCourseIdLessonIdRoute
+  LanguageLearnCourseIdIndexRoute: typeof LanguageLearnCourseIdIndexRoute
 }
 
 const LanguageRouteChildren: LanguageRouteChildren = {
   LanguageIndexRoute: LanguageIndexRoute,
   LanguageConstructorIndexRoute: LanguageConstructorIndexRoute,
   LanguageDemoIndexRoute: LanguageDemoIndexRoute,
+  LanguageLearnIndexRoute: LanguageLearnIndexRoute,
+  LanguageLearnCourseIdLessonIdRoute: LanguageLearnCourseIdLessonIdRoute,
+  LanguageLearnCourseIdIndexRoute: LanguageLearnCourseIdIndexRoute,
 }
 
 const LanguageRouteWithChildren = LanguageRoute._addFileChildren(
