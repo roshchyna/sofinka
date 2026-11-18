@@ -2,6 +2,7 @@ export const resources = {
 	en: {
 		translation: {
 			nav: {
+				learn: "Learn",
 				quiz: "Quiz",
 				demo: "Demo · age 8",
 				constructor: "Constructor",
@@ -230,6 +231,7 @@ export const resources = {
 	ua: {
 		translation: {
 			nav: {
+				learn: "Навчання",
 				quiz: "Тести",
 				demo: "Демо · 8 років",
 				constructor: "Конструктор",
@@ -456,6 +458,7 @@ export const resources = {
 	ru: {
 		translation: {
 			nav: {
+				learn: "Учиться",
 				quiz: "Тесты",
 				demo: "Демо · 8 лет",
 				constructor: "Конструктор",
