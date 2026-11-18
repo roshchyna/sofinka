@@ -42,7 +42,6 @@ const navigationItems = [
 	{ to: "/$language/learn", label: "nav.learn" },
 	{ to: "/$language", label: "nav.quiz" },
 	{ to: "/$language/constructor", label: "nav.constructor" },
-	{ to: "/$language/demo", label: "nav.demo" },
 ] as const;
 
 export default function ApplicationShell({ children }: PropsWithChildren) {
@@ -52,10 +51,9 @@ export default function ApplicationShell({ children }: PropsWithChildren) {
 	});
 	const language = getLanguageFromPathname(pathname);
 	const pathSegments = pathname.split("/").filter(Boolean);
-	const isDemoPage = pathSegments[1] === "demo";
 	const isLearningPage = pathSegments[1] === "learn";
 	const isLearningLesson = isLearningPage && pathSegments.length === 4;
-	const childAgeOverride = isDemoPage || isLearningPage ? 8 : undefined;
+	const childAgeOverride = isLearningPage ? 8 : undefined;
 	const { i18n, t } = useTranslation();
 	const [childAge, setChildAge] = useState(7);
 	const [isDark, setIsDark] = useState(true);
@@ -188,7 +186,7 @@ export default function ApplicationShell({ children }: PropsWithChildren) {
 						className={
 							isMobile ? "h-9 w-32 px-2 text-xs" : "h-8 w-24 px-2 text-xs"
 						}
-						disabled={isDemoPage || isLearningPage}
+						disabled={isLearningPage}
 						id={childAgeId}
 						onValueChange={(value) => changeChildAge(Number(value))}
 						options={childAgeOptions.map((age) => ({
