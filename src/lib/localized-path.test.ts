@@ -8,6 +8,6 @@ it("preserves the complete course and lesson path when changing language", () =>
 	expect(getLocalizedPath("/ua/learn/math-to-100", "ru")).toBe(
 		"/ru/learn/math-to-100",
 	);
-	expect(getLocalizedPath("/en/demo/", "ru")).toBe("/ru/demo");
+	expect(getLocalizedPath("/en/constructor/", "ru")).toBe("/ru/constructor");
 	expect(getLocalizedPath("/", "en")).toBe("/en");
 });
