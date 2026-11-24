@@ -2,7 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import backgroundImage from "@/assets/background-home.avif";
 import { HomeMascot } from "@/components/home-mascot";
 import { useMuzaAssistantContext } from "@/components/muza-assistant/context";
 import { QuestionRenderer } from "@/components/questions/question-renderer";
@@ -40,12 +39,7 @@ function HomePage() {
 
 	return (
 		<>
-			<section
-				className="relative left-1/2 -my-8 flex w-screen flex-1 -translate-x-1/2 bg-cover bg-center bg-no-repeat px-6 py-8"
-				style={{ backgroundImage: `url(${backgroundImage})` }}
-			>
-				<div className="absolute inset-0 bg-white/70 dark:bg-zinc-950/75" />
-
+			<section className="flex flex-1">
 				<div className="relative mx-auto w-full max-w-5xl columns-1 gap-6 md:columns-2">
 					{questions.length ? (
 						questions.map((question, index) => (

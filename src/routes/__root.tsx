@@ -13,6 +13,7 @@ import { useTranslation } from "react-i18next";
 import ApplicationShell from "@/common/application-shell";
 import "@/i18n";
 import { type Language, toLanguage } from "@/i18n/languages";
+import { backgroundScript } from "@/lib/backgrounds";
 import { Loader } from "@/ui/loader";
 import { Toaster } from "@/ui/toaster";
 import appCss from "../styles.css?url";
@@ -22,17 +23,15 @@ const NotFoundAnimation = lazy(() => import("@/components/not-found-page"));
 
 const themeScript = `
 try {
-  const themes = ["light", "dark", "black", "system"];
+  const themes = ["light", "dark", "system"];
   const storedTheme = localStorage.getItem("theme");
   const rawTheme = themes.includes(storedTheme) ? storedTheme : "dark";
   const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
   const isDark = rawTheme === "dark" || (rawTheme === "system" && systemTheme === "dark");
-  const isBlack = rawTheme === "black";
 
   localStorage.setItem("theme", rawTheme);
   document.documentElement.classList.toggle("dark", isDark);
-  document.documentElement.classList.toggle("black", isBlack);
-  document.documentElement.style.colorScheme = isDark || isBlack ? "dark" : "light";
+  document.documentElement.style.colorScheme = isDark ? "dark" : "light";
 } catch {}
 `;
 
@@ -144,6 +143,8 @@ function RootDocument({ children }: { children: ReactNode }) {
 			<head>
 				{/* biome-ignore lint/security/noDangerouslySetInnerHtml: Applies the saved theme before hydration. */}
 				<script dangerouslySetInnerHTML={{ __html: themeScript }} />
+				{/* biome-ignore lint/security/noDangerouslySetInnerHtml: Applies a bundled background URL before paint; no user input. */}
+				<script dangerouslySetInnerHTML={{ __html: backgroundScript }} />
 				<HeadContent />
 			</head>
 			<body>

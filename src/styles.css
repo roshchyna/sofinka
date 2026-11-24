@@ -2,7 +2,6 @@
 @plugin 'tailwindcss-animate';
 
 @custom-variant dark (&:where(.dark, .dark *));
-@custom-variant black (&:where(.black, .black *));
 
 body {
   margin: 0;
