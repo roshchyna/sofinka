@@ -50,6 +50,7 @@ pnpm test:coverage            # Coverage; HTML report at coverage/index.html
 | `src/components/learning/` | Course overview, lesson player, worked example, summary, and persistence status UI. |
 | `src/components/muza-assistant/` | Chat UI, types, state, storage, and the API client in `api.ts`. |
 | `src/common/application-shell.tsx` | Shared shell, navigation, language selector, and theme controls. |
+| `src/common/application-background.tsx` | Shared decorative background; registry and pre-paint setup are in `src/lib/backgrounds.ts`. |
 | `src/routes/` | TanStack file-based routes; localized pages live under `$language`. |
 | `src/routes/api/` | Server-side HTTP handlers, including requests to OpenRouter. |
 | `src/lib/` | Shared utilities and browser persistence; lesson domain logic lives in `src/lib/learning/`. |
@@ -94,7 +95,8 @@ pnpm test:coverage            # Coverage; HTML report at coverage/index.html
 - Extend existing primitive variants rather than duplicating Button/Card or introducing unrelated palettes.
 - Do not add static inline styles or arbitrary hex colors/pixel spacing to new UI; use utilities and shared variants.
   Inline styles for computed values, such as background image URLs, are already used and are acceptable.
-- Check light and dark themes; the `dark` and `black` variants are defined in `src/styles.css`.
+- Check light and dark themes; the `dark` variant is defined in `src/styles.css`.
+- Backgrounds are selected randomly before paint. Reuse the shared layer; do not add route-specific background images or persist background selection.
 - Preserve label/htmlFor associations, fieldset/legend grouping, keyboard interaction, and ARIA states in interactive components.
 - Button defaults to `type="button"`; specify `type="submit"` for form submission.
 

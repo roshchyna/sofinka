@@ -1,9 +1,9 @@
 export const THEME_STORAGE_KEY = "theme";
 
-export type Theme = "light" | "dark" | "black" | "system";
+export type Theme = "light" | "dark" | "system";
 
 const fallbackTheme: Theme = "dark";
-const themes = new Set<Theme>(["light", "dark", "black", "system"]);
+const themes = new Set<Theme>(["light", "dark", "system"]);
 
 function normalizeTheme(theme: string | null): Theme {
 	return themes.has(theme as Theme) ? (theme as Theme) : fallbackTheme;
@@ -28,7 +28,6 @@ export function getTheme() {
 }
 
 export function isThemeDark(theme = getTheme()) {
-	if (theme === "black") return true;
 	if (theme === "dark") return true;
 	if (theme === "system") return getSystemTheme() === "dark";
 
@@ -42,12 +41,9 @@ export function updateTheme() {
 	const systemTheme = getSystemTheme();
 	const isDark =
 		rawTheme === "dark" || (rawTheme === "system" && systemTheme === "dark");
-	const isBlack = rawTheme === "black";
 
 	document.documentElement.classList.toggle("dark", isDark);
-	document.documentElement.classList.toggle("black", isBlack);
-	document.documentElement.style.colorScheme =
-		isDark || isBlack ? "dark" : "light";
+	document.documentElement.style.colorScheme = isDark ? "dark" : "light";
 
 	return rawTheme;
 }

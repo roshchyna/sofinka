@@ -2,7 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { type Dispatch, type SetStateAction, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import backgroundConstructorImage from "@/assets/background-constructor.avif";
 import { ChoiceOptionsEditor } from "@/components/constructor/choice-options-editor";
 import { FieldLabel } from "@/components/constructor/field-label";
 import { GenerateQuestionsDialog } from "@/components/constructor/generate-questions-dialog";
@@ -305,12 +304,7 @@ function ConstructorPage() {
 	}
 
 	return (
-		<section
-			className="relative left-1/2 -my-8 min-h-[calc(100vh-3.5rem)] w-screen -translate-x-1/2 bg-cover bg-center bg-no-repeat px-6 py-8"
-			style={{ backgroundImage: `url(${backgroundConstructorImage})` }}
-		>
-			<div className="absolute inset-0 bg-white/70 dark:bg-zinc-950/75" />
-
+		<section className="w-full">
 			<div className="relative mx-auto grid w-full max-w-5xl gap-6">
 				<Card>
 					<CardHeader>

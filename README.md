@@ -71,6 +71,12 @@ Supported question types:
 - Language codes are mapped to full language names before AI generation requests.
 - Theme is applied before hydration to avoid a visible flash of the wrong theme.
 
+## Backgrounds
+
+All pages share a randomly selected decorative background. The setup runs in the document head before paint; light and dark overlays preserve content readability.
+
+The registry is in `src/lib/backgrounds.ts`, and the shared layer is in `src/common/application-background.tsx`. SVGs in `src/assets/backgrounds/` were generated with [Haikei](https://haikei.app/) and adapted to the project's Tailwind pink, rose, and violet palette.
+
 ## Tech Stack
 
 - React

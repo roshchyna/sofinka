@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { type PropsWithChildren, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { ApplicationBackground } from "@/common/application-background";
 import { FluidCursor } from "@/components/fluid-cursor";
 import MuzaAssistant from "@/components/muza-assistant";
 import { MuzaAssistantProvider } from "@/components/muza-assistant/context";
@@ -25,7 +26,7 @@ import {
 } from "@/lib/child-age-storage";
 import { saveLanguage } from "@/lib/language-storage";
 import { getLocalizedPath } from "@/lib/localized-path";
-import { isThemeDark, setTheme, updateTheme } from "@/lib/theme";
+import { setTheme, updateTheme } from "@/lib/theme";
 import { Button } from "@/ui/button";
 import {
 	Dialog,
@@ -56,7 +57,6 @@ export default function ApplicationShell({ children }: PropsWithChildren) {
 	const childAgeOverride = isLearningPage ? 8 : undefined;
 	const { i18n, t } = useTranslation();
 	const [childAge, setChildAge] = useState(7);
-	const [isDark, setIsDark] = useState(true);
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 	const [isFluidEffectEnabled, setIsFluidEffectEnabled] = useState(false);
 	const isTransitioning = useRouterState({
@@ -90,8 +90,7 @@ export default function ApplicationShell({ children }: PropsWithChildren) {
 
 	useEffect(() => {
 		const syncTheme = () => {
-			const nextTheme = updateTheme();
-			setIsDark(isThemeDark(nextTheme));
+			updateTheme();
 		};
 		const systemTheme = window.matchMedia("(prefers-color-scheme: dark)");
 
@@ -106,10 +105,10 @@ export default function ApplicationShell({ children }: PropsWithChildren) {
 	}, []);
 
 	function toggleTheme() {
-		const nextTheme = isDark ? "light" : "dark";
-
+		const nextTheme = document.documentElement.classList.contains("dark")
+			? "light"
+			: "dark";
 		setTheme(nextTheme);
-		setIsDark(isThemeDark(nextTheme));
 	}
 
 	function toggleFluidEffect() {
@@ -216,20 +215,15 @@ export default function ApplicationShell({ children }: PropsWithChildren) {
 					/>
 				</label>
 				<Button
-					aria-label={
-						isDark ? t("nav.enableLightTheme") : t("nav.enableDarkTheme")
-					}
+					aria-label={t("nav.toggleTheme")}
 					className={isMobile ? "h-10 justify-start" : undefined}
 					onClick={toggleTheme}
 					size="sm"
 					variant="outline"
 				>
-					{isDark ? <Sun /> : <Moon />}
-					{isMobile && (
-						<span>
-							{isDark ? t("nav.enableLightTheme") : t("nav.enableDarkTheme")}
-						</span>
-					)}
+					<Sun aria-hidden="true" className="hidden dark:block" />
+					<Moon aria-hidden="true" className="dark:hidden" />
+					{isMobile && <span>{t("nav.toggleTheme")}</span>}
 				</Button>
 				{!isMobile && (
 					<Button
@@ -250,7 +244,8 @@ export default function ApplicationShell({ children }: PropsWithChildren) {
 	return (
 		<MuzaAssistantProvider>
 			<FluidCursor enabled={isFluidEffectEnabled && !isLearningLesson} />
-			<div className="flex min-h-screen flex-col bg-white text-zinc-950 dark:bg-zinc-950 dark:text-zinc-300">
+			<div className="relative isolate flex min-h-screen flex-col bg-white text-zinc-950 dark:bg-zinc-950 dark:text-zinc-300">
+				<ApplicationBackground />
 				<header className="shrink-0 border-zinc-200 border-b bg-pink-50 dark:border-zinc-800 dark:bg-zinc-900">
 					<div className="mx-auto flex min-h-14 max-w-6xl flex-wrap items-center justify-between gap-3 px-6 py-2">
 						<Link
