@@ -42,3 +42,6 @@ jobs:
 
       - name: Build production bundle
         run: pnpm build
+
+      - name: Build Storybook
+        run: pnpm build-storybook

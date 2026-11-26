@@ -183,6 +183,12 @@ Supported states: `idle`, `thinking`, `writing`, `speaking`, `listening`, `happy
 
 Home and chat reuse this component. Chat drives `idle`, `thinking`, and `writing`; other states are available for lesson/audio integration. `speaking` provides a mouth animation only: it does not generate audio, access the microphone, or perform phoneme-based lip sync. The audio caller must set the state on playback start and reset it on completion, cancellation, or error.
 
+## Storybook
+
+Run `pnpm storybook`, then open [localhost:6006](http://localhost:6006). The catalog covers UI primitives, all nine question types, editors, learning components, chat, and all eleven Muza states. Theme and language are in the toolbar; component parameters are in Controls. AI requests use local mock responses.
+
+`pnpm build-storybook` exports `storybook-static/`. Stories are colocated as `*.stories.tsx`; `pnpm test` also checks that every story renders in jsdom.
+
 ## Testing
 
 The test suite covers:
