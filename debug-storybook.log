@@ -1,0 +1,17 @@
+[22:03:13.056] [INFO] storybook v10.6.8
+[22:03:13.148] [DEBUG] Getting package.json info for /Users/roshchyna/Documents/Sofias_platform/sofinka/package.json...
+[22:03:13.335] [DEBUG] Could not determine @babel/preset-env version in use. In case of runtime errors with @babel/preset-env, you may need to set the babelRemoveBugfixes feature flag in your `main.ts` file.
+[22:03:13.431] [DEBUG] Serving static files from [36mpublic[39m at [36m/[39m
+[22:03:13.431] [INFO] Starting...
+[22:03:13.631] [DEBUG] Starting preview..
+[22:03:13.854] [DEBUG] Change detection enabled.
+[22:03:13.855] [DEBUG] Change detection: snapshotting Vite resolve config (restart required if vite.config.ts changes)
+[22:03:13.855] [DEBUG] Change detection: ignored 12 regex alias(es); related modules tracked as opaque-leaf.
+[22:03:13.855] [DEBUG] ChangeDetectionResolverFactory: skipped regex aliases [/^@storybook\/global$/, /^storybook\/test$/, /^storybook\/actions$/, /^storybook\/preview-api$/, /^storybook\/internal\/channels$/, /^storybook\/internal\/client-logger$/, /^storybook\/internal\/core-events$/, /^storybook\/internal\/preview-errors$/, /^storybook\/internal\/types$/, /^storybook\/internal\/preview-api$/, /^\/?@vite\/env/, /^\/?@vite\/client/]
+[22:03:13.870] [ERROR] [38;2;241;97;97mError: listen EADDRINUSE: address already in use 127.0.0.1:6006[39m
+    at Server.setupListenHandle [as _listen2] (node:net:2390:16)
+    at listenInCluster (node:net:2499:12)
+    at node:net:2728:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+[22:03:13.870] [WARN] Broken build, fix the error above.
+You may need to refresh the browser.

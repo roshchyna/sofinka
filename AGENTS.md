@@ -24,6 +24,8 @@ pnpm dev:server               # Standalone Node generation server; defaults to l
 pnpm dev:all                  # Run the app and standalone server together
 pnpm build                    # Production build; does not replace typecheck
 pnpm preview                  # Preview the build locally
+pnpm storybook                # Component catalog at http://localhost:6006
+pnpm build-storybook          # Static catalog in storybook-static/
 pnpm check                    # Biome lint, formatting, and import order checks; no writes
 pnpm lint                     # Biome lint only
 pnpm format --write src/ui/button.tsx  # Example: format a specific file
@@ -37,7 +39,8 @@ pnpm test:coverage            # Coverage; HTML report at coverage/index.html
 - The client calls relative `/api/*` endpoints; built-in API routes do not require the standalone server on port 3001.
 - AI features require a server-side `OPENROUTER_API_KEY` in `.env`; `OPENROUTER_MODEL` is optional.
 - No E2E framework or E2E command is configured. Do not present jsdom tests as browser verification.
-- CI runs `pnpm check`, `pnpm typecheck`, `pnpm test`, and `pnpm build`.
+- CI runs `pnpm check`, `pnpm typecheck`, `pnpm test`, `pnpm build`, and `pnpm build-storybook`.
+- Storybook 10.6 uses its own Vite config in `.storybook/` (without TanStack Start/Nitro), shared i18n/router/query providers, and local API mocks. Never send paid AI requests from stories. Colocate `*.stories.tsx`; `src/storybook.test.tsx` renders all stories in jsdom with animations mocked, not browser verification.
 - `biome.json` excludes `src/styles.css` and `src/routeTree.gen.ts`; its checks do not cover `server/`.
 
 ## Code map and placement
