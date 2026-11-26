@@ -1,0 +1,192 @@
+.muza-mascot .muza-body {
+	transform-origin: 120px 250px;
+	animation: muza-breathe 4s ease-in-out infinite;
+}
+
+.muza-mascot .muza-head {
+	transform-origin: 120px 165px;
+}
+
+.muza-mascot .muza-tail {
+	transform-origin: 151px 240px;
+	animation: muza-tail 5s ease-in-out infinite;
+}
+
+.muza-mascot .muza-blink {
+	transform-box: fill-box;
+	transform-origin: center;
+	animation: muza-blink 5.5s infinite;
+}
+
+.muza-mascot .muza-paw {
+	transform-origin: 145px 198px;
+	transform: rotate(65deg);
+	transition: transform 300ms ease;
+}
+
+.muza-mascot .muza-paw-raised {
+	transform: rotate(0);
+}
+
+.muza-mascot[data-state="thinking"] .muza-head {
+	transform: rotate(-7deg);
+}
+
+.muza-mascot[data-state="writing"] .muza-paw {
+	animation: muza-write 700ms ease-in-out infinite;
+}
+
+.muza-mascot[data-state="speaking"] .muza-speaking-mouth {
+	transform-box: fill-box;
+	transform-origin: top center;
+	animation: muza-talk 450ms ease-in-out infinite;
+}
+
+.muza-mascot[data-state="listening"] .muza-head,
+.muza-mascot[data-state="hint"] .muza-head {
+	transform: rotate(6deg);
+}
+
+.muza-mascot[data-state="happy"] .muza-body {
+	animation: muza-hop 800ms ease-in-out 2;
+}
+
+.muza-mascot[data-state="error"] .muza-head {
+	transform: rotate(-5deg);
+}
+
+.muza-mascot[data-state="waving"] .muza-paw {
+	animation: muza-wave 900ms ease-in-out infinite;
+}
+
+.muza-mascot[data-state="sleeping"] .muza-body {
+	animation: muza-breathe 6s ease-in-out infinite;
+}
+
+.muza-mascot[data-state="purring"] .muza-head {
+	animation: muza-purr 250ms ease-in-out infinite;
+}
+
+.muza-mascot .muza-thought,
+.muza-mascot .muza-hint,
+.muza-mascot .muza-listening,
+.muza-mascot .muza-sleep {
+	animation: muza-float 2s ease-in-out infinite;
+}
+
+@keyframes muza-breathe {
+	0%,
+	100% {
+		transform: scaleY(1);
+	}
+	50% {
+		transform: scaleY(1.015);
+	}
+}
+
+@keyframes muza-tail {
+	0%,
+	100% {
+		transform: rotate(0);
+	}
+	50% {
+		transform: rotate(-6deg);
+	}
+}
+
+@keyframes muza-blink {
+	0%,
+	43%,
+	47%,
+	100% {
+		transform: scaleY(1);
+	}
+	45% {
+		transform: scaleY(0.06);
+	}
+}
+
+@keyframes muza-talk {
+	0%,
+	100% {
+		transform: scaleY(0.25);
+	}
+	30% {
+		transform: scaleY(1);
+	}
+	65% {
+		transform: scaleY(0.5);
+	}
+	80% {
+		transform: scaleY(0.8);
+	}
+}
+
+@keyframes muza-hop {
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+	45% {
+		transform: translateY(-9px) rotate(-3deg);
+	}
+}
+
+@keyframes muza-wave {
+	0%,
+	100% {
+		transform: rotate(-12deg);
+	}
+	50% {
+		transform: rotate(12deg);
+	}
+}
+
+@keyframes muza-write {
+	0%,
+	100% {
+		transform: rotate(55deg);
+	}
+	50% {
+		transform: rotate(70deg);
+	}
+}
+
+@keyframes muza-purr {
+	0%,
+	100% {
+		transform: rotate(-1deg);
+	}
+	50% {
+		transform: rotate(1deg);
+	}
+}
+
+@keyframes muza-float {
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-4px);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.muza-mascot[data-state]
+		:is(
+			.muza-body,
+			.muza-head,
+			.muza-tail,
+			.muza-blink,
+			.muza-paw,
+			.muza-speaking-mouth,
+			.muza-thought,
+			.muza-hint,
+			.muza-listening,
+			.muza-sleep
+		) {
+		animation: none;
+		transition: none;
+	}
+}

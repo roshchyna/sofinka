@@ -169,6 +169,20 @@ pnpm test
 pnpm build
 ```
 
+## Muza character
+
+The shared SVG character is in `src/components/muza-mascot/muza-mascot.tsx`, with scoped CSS animations alongside it.
+
+```tsx
+import { MuzaMascot } from "@/components/muza-mascot/muza-mascot";
+
+<MuzaMascot state="speaking" label="Muza" className="size-48" />
+```
+
+Supported states: `idle`, `thinking`, `writing`, `speaking`, `listening`, `happy`, `hint`, `error`, `waving`, `sleeping`, and `purring`. The optional `interactive` prop enables a greeting on button activation and pointer tracking. Animations respect `prefers-reduced-motion`.
+
+Home and chat reuse this component. Chat drives `idle`, `thinking`, and `writing`; other states are available for lesson/audio integration. `speaking` provides a mouth animation only: it does not generate audio, access the microphone, or perform phoneme-based lip sync. The audio caller must set the state on playback start and reset it on completion, cancellation, or error.
+
 ## Testing
 
 The test suite covers:

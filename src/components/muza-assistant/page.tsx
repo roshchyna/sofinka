@@ -17,7 +17,6 @@ import {
 	MessageCopyAction,
 	MessageResponse,
 } from "./message";
-import { Persona } from "./persona";
 import { PromptInput } from "./prompt-input";
 import {
 	clearMuzaMessages,
@@ -346,7 +345,12 @@ export function MuzaPage({ age: ageOverride, endpoint }: MuzaPageProps) {
 				</Conversation>
 			) : (
 				<div className="flex flex-1 flex-col items-center justify-center gap-4 p-6 text-center">
-					<Persona className="size-28" state={personaState} />
+					<span
+						aria-hidden="true"
+						className="inline-block origin-bottom-right text-6xl leading-none motion-safe:animate-muza-greeting-wave"
+					>
+						👋
+					</span>
 					<div>
 						<div className="font-semibold text-2xl text-zinc-950 dark:text-zinc-100">
 							{copy.greeting}

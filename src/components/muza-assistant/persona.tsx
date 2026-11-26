@@ -1,5 +1,6 @@
-import { useRive } from "@rive-app/react-webgl2";
 import { memo } from "react";
+import { useTranslation } from "react-i18next";
+import { MuzaMascot } from "@/components/muza-mascot/muza-mascot";
 import { cn } from "@/utils/twMerge";
 import type { MuzaPersonaState } from "./types";
 
@@ -8,26 +9,16 @@ interface PersonaProps {
 	state: MuzaPersonaState;
 }
 
-const muzaCatRiv = "/rive/muza-cat-companion.riv";
-const stateMachine = "State Machine 1";
-
-export const Persona = memo(({ className, state }: PersonaProps) => {
-	const { RiveComponent } = useRive({
-		artboard: "Artboard",
-		autoplay: true,
-		src: muzaCatRiv,
-		stateMachines: stateMachine,
-	});
+export const Muza = memo(({ className, state }: PersonaProps) => {
+	const { t } = useTranslation();
 
 	return (
-		<RiveComponent
-			className={cn(
-				"size-14 shrink-0 transition duration-300",
-				state === "writing" && "scale-105 animate-pulse",
-				className,
-			)}
+		<MuzaMascot
+			className={cn("size-14", className)}
+			label={t("home.mascotAria")}
+			state={state}
 		/>
 	);
 });
 
-Persona.displayName = "Persona";
+Muza.displayName = "Muza";

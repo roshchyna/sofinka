@@ -1,11 +1,11 @@
-import { useRive, useStateMachineInput } from "@rive-app/react-webgl2";
 import { SendHorizontal } from "lucide-react";
-import { type ChangeEvent, type KeyboardEvent, useEffect } from "react";
+import type { ChangeEvent, KeyboardEvent } from "react";
 
 import { Button } from "@/ui/button";
 import { Textarea } from "@/ui/textarea";
 import { cn } from "@/utils/twMerge";
 import { ClearDialog } from "./clear-dialog";
+import { Muza } from "./persona";
 import type { MuzaPersonaState } from "./types";
 
 interface PromptInputProps {
@@ -25,38 +25,6 @@ interface PromptInputProps {
 	status: string;
 	title: string;
 	value: string;
-}
-
-const muzaOrbRiv = "/rive/orb-1.2.riv";
-const promptOrbStateMachine = "default";
-
-function PromptPersona({ state }: { state: MuzaPersonaState }) {
-	const { rive, RiveComponent } = useRive({
-		autoplay: true,
-		src: muzaOrbRiv,
-		stateMachines: promptOrbStateMachine,
-	});
-	const thinkingInput = useStateMachineInput(
-		rive,
-		promptOrbStateMachine,
-		"thinking",
-	);
-
-	useEffect(() => {
-		if (thinkingInput) {
-			thinkingInput.value = state === "thinking";
-		}
-	}, [state, thinkingInput]);
-
-	return (
-		<RiveComponent
-			className={cn(
-				"size-12 shrink-0 transition duration-300",
-				state === "thinking" && "scale-105",
-				state === "writing" && "scale-105 animate-pulse",
-			)}
-		/>
-	);
 }
 
 export function PromptInput({
@@ -113,7 +81,7 @@ export function PromptInput({
 			/>
 			<div className="mt-3 flex items-center justify-between gap-3">
 				<div className="flex min-w-0 items-center gap-2">
-					<PromptPersona state={personaState} />
+					<Muza className="size-12" state={personaState} />
 					<div className="min-w-0">
 						<div className="truncate font-medium text-sm text-zinc-950 dark:text-zinc-100">
 							{title}
