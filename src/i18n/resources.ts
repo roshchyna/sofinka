@@ -31,6 +31,7 @@ export const resources = {
 			home: {
 				questionEyebrow: "Question {{number}}",
 				mascotAria: "Muza companion",
+				mascotInteract: "Say hello to Muza",
 			},
 			reward: {
 				correctAnswerToast: "Correct! +1 star",
@@ -226,6 +227,7 @@ export const resources = {
 			home: {
 				questionEyebrow: "Запитання {{number}}",
 				mascotAria: "Помічниця Муза",
+				mascotInteract: "Привітатися з Музою",
 			},
 			reward: {
 				correctAnswerToast: "Правильно! +1 зірка",
@@ -420,6 +422,7 @@ export const resources = {
 			home: {
 				questionEyebrow: "Вопрос {{number}}",
 				mascotAria: "Помощница Муза",
+				mascotInteract: "Поздороваться с Музой",
 			},
 			reward: {
 				correctAnswerToast: "Верно! +1 звезда",

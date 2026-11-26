@@ -49,6 +49,7 @@ pnpm test:coverage            # Coverage; HTML report at coverage/index.html
 | `src/components/constructor/` | Question editors, draft models and conversions, and the AI generation dialog. |
 | `src/components/learning/` | Course overview, lesson player, worked example, summary, and persistence status UI. |
 | `src/components/muza-assistant/` | Chat UI, types, state, storage, and the API client in `api.ts`. |
+| `src/components/muza-mascot/` | Shared SVG Muza character, typed animation states, and scoped CSS animations; used on the home page and in chat. |
 | `src/common/application-shell.tsx` | Shared shell, navigation, language selector, and theme controls. |
 | `src/common/application-background.tsx` | Shared decorative background; registry and pre-paint setup are in `src/lib/backgrounds.ts`. |
 | `src/routes/` | TanStack file-based routes; localized pages live under `$language`. |
@@ -93,6 +94,7 @@ pnpm test:coverage            # Coverage; HTML report at coverage/index.html
 - Use Tailwind utilities, existing color/spacing scales, and `cn` from `src/utils/twMerge.ts`.
 - There is no shared design-token file yet. Shared button variants are in `src/ui/button.tsx`; question palettes are in `question-theme.ts`.
 - Extend existing primitive variants rather than duplicating Button/Card or introducing unrelated palettes.
+- Muza uses `MuzaMascot` with explicit `state` props. Keep chat `writing` separate from audio `speaking`; the latter only animates the mouth and does not generate speech. Respect reduced motion in mascot animations.
 - Do not add static inline styles or arbitrary hex colors/pixel spacing to new UI; use utilities and shared variants.
   Inline styles for computed values, such as background image URLs, are already used and are acceptable.
 - Check light and dark themes; the `dark` variant is defined in `src/styles.css`.
